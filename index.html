@@ -43,6 +43,10 @@
   <!-- FontAwesome Icons for Standalone Display -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+  <!-- Firebase App & Realtime Database SDK (Compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
+
   <style>
     body {
       background-color: #070b14;
@@ -295,7 +299,7 @@
     </div>
   </section>
 
-  <!-- DEVICE REPAIR & SERVICE GALLERY SECTION (NEW SECTION) -->
+  <!-- DEVICE REPAIR & SERVICE GALLERY SECTION -->
   <section id="gallery" class="py-24 px-4 sm:px-6 lg:px-8 bg-[#060913] border-t border-cyan-500/20 relative overflow-hidden">
     <!-- Subtle Background Ambient Glows -->
     <div class="absolute top-1/4 -left-20 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -497,7 +501,7 @@
     <p>&copy; 2026 Mithila / Kashmika. Full-Stack Developer &amp; Technical Specialist. All rights reserved.</p>
   </footer>
 
-  <!-- MANAGEMENT DASHBOARD MODAL (ADD ENTRY + MANAGE EXISTING ENTRIES) -->
+  <!-- MANAGEMENT DASHBOARD MODAL -->
   <div id="admin-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
     <div class="relative w-full max-w-4xl bg-[#090e1d] border border-cyan-500/40 rounded-2xl p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto shadow-[0_0_50px_rgba(6,182,212,0.15)]">
       <button onclick="closeAdminModal()" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-white bg-slate-900 rounded-lg">
@@ -559,9 +563,7 @@
           </button>
         </div>
 
-        <!-- ========================================================= -->
-        <!-- MAIN TAB: ADD NEW ENTRY                                    -->
-        <!-- ========================================================= -->
+        <!-- MAIN TAB: ADD NEW ENTRY -->
         <div id="main-tab-add" class="space-y-5">
 
           <!-- Sub-Navigation Tabs: Projects vs Device Gallery -->
@@ -693,9 +695,7 @@
 
         </div>
 
-        <!-- ========================================================= -->
-        <!-- MAIN TAB: MANAGE EXISTING ENTRIES                          -->
-        <!-- ========================================================= -->
+        <!-- MAIN TAB: MANAGE EXISTING ENTRIES -->
         <div id="main-tab-manage" class="hidden space-y-5">
 
           <!-- Search + Utilities -->
@@ -750,7 +750,7 @@
     </div>
   </div>
 
-  <!-- REUSABLE CONFIRMATION MODAL (DELETE / RESTORE DEFAULTS) -->
+  <!-- REUSABLE CONFIRMATION MODAL -->
   <div id="confirm-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
     <div class="relative w-full max-w-sm bg-[#090e1d] border border-rose-500/40 rounded-2xl p-6 space-y-5 shadow-[0_0_50px_rgba(244,63,94,0.15)]">
       <div class="flex items-center gap-3">
@@ -821,7 +821,7 @@
   <!-- JAVASCRIPT LOGIC -->
   <script>
     // ==========================================
-    // PLACEHOLDER IMAGE (used when no upload is provided for an optional image)
+    // PLACEHOLDER IMAGE
     // ==========================================
     const PLACEHOLDER_IMAGE = 'data:image/svg+xml;utf8,' + encodeURIComponent(
       '<svg xmlns="http://www.w3.org/2000/svg" width="480" height="360">' +
@@ -831,7 +831,7 @@
     );
 
     // ==========================================
-    // LOCAL STORAGE KEYS
+    // LOCAL STORAGE KEYS (used for fallback/offline cache)
     // ==========================================
     const STORAGE_KEY_PROJECTS = 'kashmika_portfolio_projects_v1';
     const STORAGE_KEY_GALLERY = 'kashmika_portfolio_gallery_v1';
@@ -981,9 +981,43 @@
     ];
 
     // ==========================================
-    // PERSISTENCE HELPERS (localStorage)
+    // 3. FIREBASE REALTIME DATABASE CONFIGURATION
     // ==========================================
-    function loadProjects() {
+    // Replace the placeholders below with your actual Firebase project credentials:
+    // (Firebase Console -> Project Settings -> General -> Your apps -> Web app)
+    const firebaseConfig = {
+      apiKey: "AIzaSyB_mDkKt6R9pHJYR5d2hXput9PsBOUpBAY",
+      authDomain: "portfolio-69477.firebaseapp.com",
+      databaseURL: "https://portfolio-69477-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "portfolio-69477",
+      storageBucket: "portfolio-69477.firebasestorage.app",
+      messagingSenderId: "1077440248878",
+      appId: "1:1077440248878:web:9f2ce8b1619856a52573bf"
+    };
+
+    let db = null;
+    let projectsRef = null;
+    let galleryRef = null;
+    let isFirebaseReady = false;
+
+    try {
+      if (typeof firebase !== 'undefined') {
+        if (!firebase.apps.length) {
+          firebase.initializeApp(firebaseConfig);
+        }
+        db = firebase.database();
+        projectsRef = db.ref('projects');
+        galleryRef = db.ref('gallery');
+        isFirebaseReady = true;
+      }
+    } catch (e) {
+      console.warn("Firebase initialization warning (falling back to local cache):", e);
+    }
+
+    // ==========================================
+    // 4. DATA PERSISTENCE HELPERS
+    // ==========================================
+    function loadLocalProjects() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY_PROJECTS);
         if (raw) return JSON.parse(raw);
@@ -993,7 +1027,7 @@
       return JSON.parse(JSON.stringify(DEFAULT_PROJECTS));
     }
 
-    function loadGallery() {
+    function loadLocalGallery() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY_GALLERY);
         if (raw) return JSON.parse(raw);
@@ -1003,28 +1037,91 @@
       return JSON.parse(JSON.stringify(DEFAULT_GALLERY));
     }
 
-    function saveProjects() {
+    function saveLocalProjects(data) {
       try {
-        localStorage.setItem(STORAGE_KEY_PROJECTS, JSON.stringify(projects));
+        localStorage.setItem(STORAGE_KEY_PROJECTS, JSON.stringify(data));
       } catch (e) {
-        alert('Could not save projects locally. Your browser storage may be full.');
+        console.warn('Could not save projects to localStorage:', e);
       }
     }
 
-    function saveGallery() {
+    function saveLocalGallery(data) {
       try {
-        localStorage.setItem(STORAGE_KEY_GALLERY, JSON.stringify(galleryItems));
+        localStorage.setItem(STORAGE_KEY_GALLERY, JSON.stringify(data));
       } catch (e) {
-        alert('Could not save gallery items locally. Your browser storage may be full.');
+        console.warn('Could not save gallery to localStorage:', e);
       }
     }
 
-    let projects = loadProjects();
-    let galleryItems = loadGallery();
+    let projects = loadLocalProjects();
+    let galleryItems = loadLocalGallery();
 
     // Track whether an existing record is being edited (null = adding new)
     let editingProjectId = null;
     let editingGalleryId = null;
+
+    // Real-time synchronization with Firebase Realtime Database
+    function initFirebaseSync() {
+      if (!isFirebaseReady || !projectsRef || !galleryRef) {
+        renderProjects();
+        renderGallery('all');
+        return;
+      }
+
+      // Realtime listener for Projects
+      projectsRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          if (Array.isArray(data)) {
+            projects = data.filter(Boolean);
+          } else {
+            projects = Object.keys(data).map(key => ({
+              id: key,
+              ...data[key]
+            }));
+          }
+          saveLocalProjects(projects);
+        } else {
+          // If the Firebase Realtime Database collection is empty, seed with initial defaults
+          const seedMap = {};
+          DEFAULT_PROJECTS.forEach(p => { seedMap[p.id] = p; });
+          projectsRef.set(seedMap).catch(err => console.warn('Could not seed projects to Firebase:', err));
+        }
+        renderProjects();
+        renderManageProjects();
+      }, (err) => {
+        console.warn('Firebase projects listener warning (offline fallback):', err);
+        renderProjects();
+        renderManageProjects();
+      });
+
+      // Realtime listener for Device Gallery Records
+      galleryRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          if (Array.isArray(data)) {
+            galleryItems = data.filter(Boolean);
+          } else {
+            galleryItems = Object.keys(data).map(key => ({
+              id: key,
+              ...data[key]
+            }));
+          }
+          saveLocalGallery(galleryItems);
+        } else {
+          // If empty, seed with default gallery records
+          const seedMap = {};
+          DEFAULT_GALLERY.forEach(g => { seedMap[g.id] = g; });
+          galleryRef.set(seedMap).catch(err => console.warn('Could not seed gallery to Firebase:', err));
+        }
+        renderGallery(currentGalleryFilter);
+        renderManageGallery();
+      }, (err) => {
+        console.warn('Firebase gallery listener warning (offline fallback):', err);
+        renderGallery(currentGalleryFilter);
+        renderManageGallery();
+      });
+    }
 
     function renderProjects() {
       const grid = document.getElementById('projects-grid');
@@ -1033,8 +1130,8 @@
         <div class="rounded-2xl bg-gradient-to-b from-slate-900 via-[#0a0f21] to-[#070b16] border border-slate-800 hover:border-cyan-500/50 overflow-hidden flex flex-col justify-between transition-all group">
           <div class="aspect-video w-full bg-slate-950 relative overflow-hidden">
             <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-            <span class="absolute top-3 left-3 px-2 py-0.5 rounded bg-black/80 text-[10px] font-mono text-cyan-300 border border-cyan-800">${p.category.toUpperCase()}</span>
-            <span class="absolute top-3 right-3 px-2 py-0.5 rounded bg-black/80 text-[10px] font-mono text-emerald-400 border border-slate-700">${p.status}</span>
+            <span class="absolute top-3 left-3 px-2 py-0.5 rounded bg-black/80 text-[10px] font-mono text-cyan-300 border border-cyan-800">${(p.category || '').toUpperCase()}</span>
+            <span class="absolute top-3 right-3 px-2 py-0.5 rounded bg-black/80 text-[10px] font-mono text-emerald-400 border border-slate-700">${p.status || 'Active'}</span>
           </div>
           <div class="p-6 space-y-3 flex-1 flex flex-col justify-between">
             <div>
@@ -1043,7 +1140,7 @@
             </div>
             <div class="pt-3 border-t border-slate-800 space-y-2">
               <div class="flex flex-wrap gap-1.5">
-                ${p.tags.map(t => `<span class="px-2 py-0.5 rounded bg-slate-950 text-[11px] font-mono text-cyan-300 border border-slate-800">${t}</span>`).join('')}
+                ${(p.tags || []).map(t => `<span class="px-2 py-0.5 rounded bg-slate-950 text-[11px] font-mono text-cyan-300 border border-slate-800">${t}</span>`).join('')}
               </div>
             </div>
           </div>
@@ -1078,7 +1175,7 @@
 
       const filteredItems = filter === 'all'
         ? galleryItems
-        : galleryItems.filter(item => item.brand.toLowerCase() === filter.toLowerCase());
+        : galleryItems.filter(item => (item.brand || '').toLowerCase() === filter.toLowerCase());
 
       if (filteredItems.length === 0) {
         grid.innerHTML = '';
@@ -1088,12 +1185,12 @@
 
       if (emptyState) emptyState.classList.add('hidden');
 
-      grid.innerHTML = filteredItems.map((item, index) => {
-        // Tag badge color accent based on service tag
+      grid.innerHTML = filteredItems.map((item) => {
         let tagColor = "bg-cyan-400 text-[#070b14]";
-        if (item.serviceTag.includes("Bootloop")) tagColor = "bg-amber-400 text-[#070b14]";
-        if (item.serviceTag.includes("DFU") || item.serviceTag.includes("Baseband")) tagColor = "bg-blue-400 text-[#070b14]";
-        if (item.serviceTag.includes("Mi Account")) tagColor = "bg-emerald-400 text-[#070b14]";
+        const sTag = item.serviceTag || '';
+        if (sTag.includes("Bootloop")) tagColor = "bg-amber-400 text-[#070b14]";
+        if (sTag.includes("DFU") || sTag.includes("Baseband")) tagColor = "bg-blue-400 text-[#070b14]";
+        if (sTag.includes("Mi Account")) tagColor = "bg-emerald-400 text-[#070b14]";
 
         return `
           <div onclick="openGalleryDetail('${item.id}')" class="group relative rounded-2xl bg-gradient-to-b from-[#0c1326] via-[#090e1d] to-[#070b14] border border-slate-800 hover:border-cyan-400/80 overflow-hidden shadow-lg hover:shadow-[0_0_30px_rgba(6,182,212,0.25)] transition-all duration-300 cursor-pointer flex flex-col justify-between">
@@ -1102,13 +1199,13 @@
             <div class="aspect-[4/3] w-full bg-slate-950 relative overflow-hidden">
               <img src="${item.image}" alt="${item.model}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
               
-              <!-- Subtle Dark Top Gradient for Badges -->
+              <!-- Dark Top Gradient for Badges -->
               <div class="absolute inset-0 bg-gradient-to-t from-[#090e1d] via-transparent to-black/60 pointer-events-none"></div>
 
-              <!-- Top Left & Right Badges -->
+              <!-- Top Badges -->
               <div class="absolute top-3 left-3 flex items-center gap-2 z-10">
                 <span class="px-2.5 py-1 rounded-md text-[10px] font-mono font-bold uppercase tracking-wider bg-black/80 backdrop-blur-md text-cyan-300 border border-cyan-500/40">
-                  ${item.brandName || item.brand.toUpperCase()}
+                  ${item.brandName || (item.brand || '').toUpperCase()}
                 </span>
               </div>
               <div class="absolute top-3 right-3 z-10">
@@ -1139,7 +1236,7 @@
 
             </div>
 
-            <!-- Card Bottom Bar (visible when not hovered) -->
+            <!-- Card Bottom Bar -->
             <div class="p-4 sm:p-5 space-y-2 border-t border-slate-800/80">
               <div class="flex items-center justify-between text-xs">
                 <span class="font-mono text-cyan-400 font-semibold truncate">${item.model}</span>
@@ -1157,7 +1254,6 @@
     }
 
     function filterGallery(filter) {
-      // Update button visual states
       const filterButtons = document.querySelectorAll('.gallery-filter-btn');
       filterButtons.forEach(btn => {
         btn.classList.remove('active', 'bg-cyan-400', 'text-[#070b14]', 'border-cyan-300', 'shadow-[0_0_20px_rgba(6,182,212,0.4)]');
@@ -1173,7 +1269,6 @@
       renderGallery(filter);
     }
 
-    // Lightbox Modal for Gallery Detail
     function openGalleryDetail(id) {
       const item = galleryItems.find(i => i.id === id);
       if (!item) return;
@@ -1196,21 +1291,42 @@
     }
 
     // ==========================================
-    // 3. IMAGE PATH INPUT (URL / filename is the saved value; file picker is preview-only)
+    // 5. IMAGE PATH INPUT
     // ==========================================
-
-    // Called when the URL / filename text field changes — updates the live preview.
-    // The typed value itself is what gets saved as the record's image path.
     function handleImagePathInput(pathInputId, previewId) {
-      const val = document.getElementById(pathInputId).value.trim();
+      const pathInput = document.getElementById(pathInputId);
+      const val = pathInput.value.trim();
+      // Manual typing overrides any previously uploaded embedded image.
+      delete pathInput.dataset.uploadedImage;
       const preview = document.getElementById(previewId);
       preview.src = val || PLACEHOLDER_IMAGE;
     }
 
-    // Called when a local file is picked. This ONLY renders a local preview
-    // (via FileReader) and, if the path field is still empty, conveniently
-    // fills it in with the file's name — it does not save any image data itself.
-    function handleImagePreview(event, previewId, pathInputId) {
+    // Resize + compress an image so it stays small enough to store directly
+    // inside the Firebase Realtime Database record (no separate file storage needed).
+    function compressImageFile(file, maxDim, quality) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+            const canvas = document.createElement('canvas');
+            canvas.width = Math.round(img.width * scale);
+            canvas.height = Math.round(img.height * scale);
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            resolve(canvas.toDataURL('image/jpeg', quality));
+          };
+          img.onerror = () => reject(new Error('Could not decode image.'));
+          img.src = e.target.result;
+        };
+        reader.onerror = () => reject(new Error('Could not read file.'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function handleImagePreview(event, previewId, pathInputId) {
       const file = event.target.files && event.target.files[0];
       if (!file) return;
 
@@ -1221,22 +1337,35 @@
       }
 
       const pathInput = document.getElementById(pathInputId);
-      if (pathInput && !pathInput.value.trim()) {
-        pathInput.value = file.name;
-      }
+      const preview = document.getElementById(previewId);
 
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        document.getElementById(previewId).src = e.target.result;
-      };
-      reader.onerror = function () {
+      try {
+        const dataUrl = await compressImageFile(file, 900, 0.72);
+        preview.src = dataUrl;
+        if (pathInput) {
+          // Store the real image data on the input so it gets saved with the record,
+          // but keep the visible text field short and readable.
+          pathInput.dataset.uploadedImage = dataUrl;
+          pathInput.value = `(uploaded: ${file.name})`;
+        }
+      } catch (err) {
+        console.warn('Image compression failed:', err);
         alert('Could not read the selected image. Please try a different file.');
-      };
-      reader.readAsDataURL(file);
+      }
+    }
+
+    // Reads the field the user actually intends to save: an uploaded (embedded)
+    // image takes priority over manually typed text, falling back to existing image.
+    function resolveImagePath(pathInputId, existingImage) {
+      const pathInput = document.getElementById(pathInputId);
+      if (pathInput && pathInput.dataset.uploadedImage) {
+        return pathInput.dataset.uploadedImage;
+      }
+      return pathInput.value.trim() || existingImage || '';
     }
 
     // ==========================================
-    // 4. ADMIN MODAL & TAB CONTROL
+    // 6. ADMIN MODAL & TAB CONTROL
     // ==========================================
     let currentAdminTab = 'project';
 
@@ -1340,12 +1469,14 @@
     }
 
     // ==========================================
-    // 5. PROJECT FORM: ADD / EDIT / RESET
+    // 7. PROJECT FORM: ADD / EDIT / FIREBASE PERSISTENCE
     // ==========================================
     function resetProjectForm() {
       editingProjectId = null;
       document.getElementById('project-form').reset();
-      document.getElementById('new-proj-img-path').value = '';
+      const imgPathEl = document.getElementById('new-proj-img-path');
+      imgPathEl.value = '';
+      delete imgPathEl.dataset.uploadedImage;
       document.getElementById('new-proj-img-file').value = '';
       document.getElementById('new-proj-img-preview').src = PLACEHOLDER_IMAGE;
       document.getElementById('project-form-submit-btn').innerText = 'Publish Project to Live Showcase';
@@ -1362,7 +1493,14 @@
       document.getElementById('new-proj-status').value = p.status;
       document.getElementById('new-proj-tags').value = (p.tags || []).join(', ');
       document.getElementById('new-proj-desc').value = p.description;
-      document.getElementById('new-proj-img-path').value = p.image || '';
+      const projImgPathEl = document.getElementById('new-proj-img-path');
+      if (p.image && p.image.startsWith('data:')) {
+        projImgPathEl.dataset.uploadedImage = p.image;
+        projImgPathEl.value = '(existing uploaded image — pick a new file to replace, or type a URL)';
+      } else {
+        delete projImgPathEl.dataset.uploadedImage;
+        projImgPathEl.value = p.image || '';
+      }
       document.getElementById('new-proj-img-preview').src = p.image || PLACEHOLDER_IMAGE;
       document.getElementById('new-proj-img-file').value = '';
       document.getElementById('project-form-submit-btn').innerText = 'Update Project Record';
@@ -1378,24 +1516,38 @@
       const cat = document.getElementById('new-proj-cat').value;
       const status = document.getElementById('new-proj-status').value;
       const tags = document.getElementById('new-proj-tags').value.split(',').map(t => t.trim()).filter(Boolean);
-      const imgPath = document.getElementById('new-proj-img-path').value.trim();
+      const existingForImg = editingProjectId ? projects.find(p => p.id === editingProjectId) : null;
+      const imgPath = resolveImagePath('new-proj-img-path', existingForImg ? existingForImg.image : '');
       const desc = document.getElementById('new-proj-desc').value.trim();
 
       if (editingProjectId) {
+        const existing = projects.find(p => p.id === editingProjectId);
+        const updatedProject = {
+          title,
+          category: cat,
+          status,
+          tags,
+          image: imgPath || (existing ? existing.image : PLACEHOLDER_IMAGE),
+          description: desc
+        };
+
+        if (isFirebaseReady && projectsRef) {
+          projectsRef.child(editingProjectId).update(updatedProject).catch(err => {
+            console.error('Firebase update project failed:', err);
+          });
+        }
+        
         const idx = projects.findIndex(p => p.id === editingProjectId);
         if (idx > -1) {
-          projects[idx] = {
-            ...projects[idx],
-            title, category: cat, status, tags,
-            image: imgPath || projects[idx].image,
-            description: desc
-          };
+          projects[idx] = { ...projects[idx], ...updatedProject };
         }
+        saveLocalProjects(projects);
         editingProjectId = null;
         alert('Project record successfully updated!');
       } else {
-        projects.unshift({
-          id: 'proj-' + Date.now(),
+        const newId = 'proj-' + Date.now();
+        const newProject = {
+          id: newId,
           title,
           category: cat,
           status,
@@ -1403,11 +1555,18 @@
           image: imgPath || PLACEHOLDER_IMAGE,
           description: desc,
           dateAdded: new Date().toISOString().split('T')[0]
-        });
+        };
+
+        if (isFirebaseReady && projectsRef) {
+          projectsRef.child(newId).set(newProject).catch(err => {
+            console.error('Firebase save project failed:', err);
+          });
+        }
+        projects.unshift(newProject);
+        saveLocalProjects(projects);
         alert('Project successfully added to the live showcase!');
       }
 
-      saveProjects();
       renderProjects();
       renderManageList();
       resetProjectForm();
@@ -1415,12 +1574,14 @@
     }
 
     // ==========================================
-    // 6. GALLERY FORM: ADD / EDIT / RESET
+    // 8. GALLERY FORM: ADD / EDIT / FIREBASE PERSISTENCE
     // ==========================================
     function resetGalleryForm() {
       editingGalleryId = null;
       document.getElementById('gallery-form').reset();
-      document.getElementById('new-gallery-img-path').value = '';
+      const galleryImgPathEl = document.getElementById('new-gallery-img-path');
+      galleryImgPathEl.value = '';
+      delete galleryImgPathEl.dataset.uploadedImage;
       document.getElementById('new-gallery-img-file').value = '';
       document.getElementById('new-gallery-img-preview').src = PLACEHOLDER_IMAGE;
       document.getElementById('new-gallery-tool').value = 'Odin v3.14.4';
@@ -1439,7 +1600,14 @@
       document.getElementById('new-gallery-servicetag').value = item.serviceTag;
       document.getElementById('new-gallery-tool').value = item.tool;
       document.getElementById('new-gallery-desc').value = item.description;
-      document.getElementById('new-gallery-img-path').value = item.image || '';
+      const galItemImgPathEl = document.getElementById('new-gallery-img-path');
+      if (item.image && item.image.startsWith('data:')) {
+        galItemImgPathEl.dataset.uploadedImage = item.image;
+        galItemImgPathEl.value = '(existing uploaded image — pick a new file to replace, or type a URL)';
+      } else {
+        delete galItemImgPathEl.dataset.uploadedImage;
+        galItemImgPathEl.value = item.image || '';
+      }
       document.getElementById('new-gallery-img-preview').src = item.image || PLACEHOLDER_IMAGE;
       document.getElementById('new-gallery-img-file').value = '';
       document.getElementById('gallery-form-submit-btn').innerText = 'Update Gallery Record';
@@ -1456,10 +1624,10 @@
       const brand = document.getElementById('new-gallery-brand').value;
       const serviceTag = document.getElementById('new-gallery-servicetag').value.trim();
       const tool = document.getElementById('new-gallery-tool').value.trim();
-      const imgPath = document.getElementById('new-gallery-img-path').value.trim();
+      const existingGalleryForImg = editingGalleryId ? galleryItems.find(g => g.id === editingGalleryId) : null;
+      const imgPath = resolveImagePath('new-gallery-img-path', existingGalleryForImg ? existingGalleryForImg.image : '');
       const desc = document.getElementById('new-gallery-desc').value.trim();
 
-      // An image path is required unless we're editing a record that already has one
       if (!imgPath && !editingGalleryId) {
         alert('Please enter an image filename or URL for the device screenshot to continue.');
         return;
@@ -1477,21 +1645,35 @@
       if (brand === 'xiaomi') brandDisplayName = "Xiaomi / Redmi";
 
       if (editingGalleryId) {
+        const existing = galleryItems.find(g => g.id === editingGalleryId);
+        const updatedItem = {
+          brand,
+          brandName: brandDisplayName,
+          model,
+          title,
+          serviceTag,
+          tool: tool || "OEM Service Software",
+          image: imgPath || (existing ? existing.image : PLACEHOLDER_IMAGE),
+          description: desc
+        };
+
+        if (isFirebaseReady && galleryRef) {
+          galleryRef.child(editingGalleryId).update(updatedItem).catch(err => {
+            console.error('Firebase update gallery failed:', err);
+          });
+        }
+
         const idx = galleryItems.findIndex(g => g.id === editingGalleryId);
         if (idx > -1) {
-          galleryItems[idx] = {
-            ...galleryItems[idx],
-            brand, brandName: brandDisplayName, model, title,
-            serviceTag, tool: tool || "OEM Service Software",
-            image: imgPath || galleryItems[idx].image,
-            description: desc
-          };
+          galleryItems[idx] = { ...galleryItems[idx], ...updatedItem };
         }
+        saveLocalGallery(galleryItems);
         editingGalleryId = null;
         alert(`Device Service Record "${title}" successfully updated!`);
       } else {
-        galleryItems.unshift({
-          id: 'gallery-' + Date.now(),
+        const newId = 'gallery-' + Date.now();
+        const newItem = {
+          id: newId,
           brand,
           brandName: brandDisplayName,
           model,
@@ -1501,11 +1683,18 @@
           date: new Date().toISOString().split('T')[0],
           image: imgPath,
           description: desc
-        });
+        };
+
+        if (isFirebaseReady && galleryRef) {
+          galleryRef.child(newId).set(newItem).catch(err => {
+            console.error('Firebase save gallery failed:', err);
+          });
+        }
+        galleryItems.unshift(newItem);
+        saveLocalGallery(galleryItems);
         alert(`Device Service Record "${title}" successfully added to the Gallery!`);
       }
 
-      saveGallery();
       renderGallery(currentGalleryFilter);
       renderManageList();
       resetGalleryForm();
@@ -1513,7 +1702,7 @@
     }
 
     // ==========================================
-    // 7. MANAGE EXISTING ENTRIES: SEARCH, RENDER, EDIT, DELETE
+    // 9. MANAGE EXISTING ENTRIES
     // ==========================================
     function renderManageList() {
       renderManageProjects();
@@ -1528,8 +1717,8 @@
       const search = (document.getElementById('manage-search')?.value || '').toLowerCase().trim();
       const filtered = projects.filter(p =>
         !search ||
-        p.title.toLowerCase().includes(search) ||
-        p.category.toLowerCase().includes(search) ||
+        (p.title || '').toLowerCase().includes(search) ||
+        (p.category || '').toLowerCase().includes(search) ||
         (p.tags || []).join(' ').toLowerCase().includes(search)
       );
 
@@ -1569,11 +1758,11 @@
       const search = (document.getElementById('manage-search')?.value || '').toLowerCase().trim();
       const filtered = galleryItems.filter(g =>
         !search ||
-        g.model.toLowerCase().includes(search) ||
-        g.title.toLowerCase().includes(search) ||
-        g.brand.toLowerCase().includes(search) ||
+        (g.model || '').toLowerCase().includes(search) ||
+        (g.title || '').toLowerCase().includes(search) ||
+        (g.brand || '').toLowerCase().includes(search) ||
         (g.brandName || '').toLowerCase().includes(search) ||
-        g.serviceTag.toLowerCase().includes(search)
+        (g.serviceTag || '').toLowerCase().includes(search)
       );
 
       if (countLabel) countLabel.innerText = `Gallery Items (${galleryItems.length})`;
@@ -1605,7 +1794,7 @@
     }
 
     // ==========================================
-    // 8. CONFIRMATION MODAL (DELETE / RESTORE DEFAULTS)
+    // 10. CONFIRMATION MODAL (DELETE & RESTORE)
     // ==========================================
     let pendingConfirmCallback = null;
 
@@ -1628,25 +1817,31 @@
     }
 
     function requestDeleteProject(id) {
-      showConfirmModal('Are you sure you want to delete this record?', () => {
+      showConfirmModal('Are you sure you want to delete this project record?', () => {
+        if (isFirebaseReady && projectsRef) {
+          projectsRef.child(id).remove().catch(err => console.warn('Firebase delete project error:', err));
+        }
         projects = projects.filter(p => p.id !== id);
-        saveProjects();
+        saveLocalProjects(projects);
         renderProjects();
         renderManageList();
       });
     }
 
     function requestDeleteGallery(id) {
-      showConfirmModal('Are you sure you want to delete this record?', () => {
+      showConfirmModal('Are you sure you want to delete this gallery record?', () => {
+        if (isFirebaseReady && galleryRef) {
+          galleryRef.child(id).remove().catch(err => console.warn('Firebase delete gallery error:', err));
+        }
         galleryItems = galleryItems.filter(g => g.id !== id);
-        saveGallery();
+        saveLocalGallery(galleryItems);
         renderGallery(currentGalleryFilter);
         renderManageList();
       });
     }
 
     // ==========================================
-    // 9. BACKUP (EXPORT) & RESTORE DEFAULTS
+    // 11. BACKUP & RESTORE DEFAULTS
     // ==========================================
     function exportBackup() {
       const payload = {
@@ -1667,12 +1862,21 @@
 
     function confirmRestoreDefaults() {
       showConfirmModal(
-        'Restore Defaults will erase all local edits (added, edited, or deleted records) and reset the system back to the default demo items. This cannot be undone. Continue?',
+        'Restore Defaults will reset records in Firebase Realtime Database and local storage back to the original demo items. Continue?',
         () => {
+          if (isFirebaseReady && projectsRef && galleryRef) {
+            const projMap = {};
+            DEFAULT_PROJECTS.forEach(p => { projMap[p.id] = p; });
+            const gallMap = {};
+            DEFAULT_GALLERY.forEach(g => { gallMap[g.id] = g; });
+            
+            projectsRef.set(projMap).catch(err => console.error(err));
+            galleryRef.set(gallMap).catch(err => console.error(err));
+          }
           projects = JSON.parse(JSON.stringify(DEFAULT_PROJECTS));
           galleryItems = JSON.parse(JSON.stringify(DEFAULT_GALLERY));
-          saveProjects();
-          saveGallery();
+          saveLocalProjects(projects);
+          saveLocalGallery(galleryItems);
           renderProjects();
           filterGallery('all');
           renderManageList();
@@ -1686,8 +1890,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('new-proj-img-preview').src = PLACEHOLDER_IMAGE;
       document.getElementById('new-gallery-img-preview').src = PLACEHOLDER_IMAGE;
-      renderProjects();
-      renderGallery('all');
+      initFirebaseSync();
     });
   </script>
 </body>

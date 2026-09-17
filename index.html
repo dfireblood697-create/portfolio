@@ -607,15 +607,17 @@
                 <input type="text" id="new-proj-tags" value="React, Python, Fastboot" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono focus:border-cyan-400 focus:outline-none">
               </div>
               <div>
-                <label class="text-xs font-mono text-slate-300">Screenshot Image (Upload from Device)</label>
-                <div class="flex items-center gap-3 mt-1">
+                <label class="text-xs font-mono text-slate-300">Screenshot / Image URL or Filename</label>
+                <div class="flex items-start gap-3 mt-1">
                   <div class="w-20 h-14 rounded-lg overflow-hidden bg-slate-950 border border-slate-800 shrink-0">
                     <img id="new-proj-img-preview" src="" alt="Preview" class="w-full h-full object-cover">
                   </div>
-                  <input type="file" id="new-proj-img-file" accept="image/*" onchange="handleImageUpload(event, 'new-proj-img-preview', 'new-proj-img-data')" class="flex-1 text-[11px] text-slate-400 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-[11px] file:font-mono file:font-semibold file:bg-cyan-950 file:text-cyan-300 hover:file:bg-cyan-900 file:cursor-pointer cursor-pointer">
+                  <div class="flex-1 space-y-2">
+                    <input type="text" id="new-proj-img-path" placeholder="e.g. 1.png or https://example.com/photo.jpg" oninput="handleImagePathInput('new-proj-img-path','new-proj-img-preview')" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono focus:border-cyan-400 focus:outline-none">
+                    <input type="file" id="new-proj-img-file" accept="image/*" onchange="handleImagePreview(event, 'new-proj-img-preview', 'new-proj-img-path')" class="w-full text-[11px] text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[11px] file:font-mono file:font-semibold file:bg-cyan-950 file:text-cyan-300 hover:file:bg-cyan-900 file:cursor-pointer cursor-pointer">
+                  </div>
                 </div>
-                <input type="hidden" id="new-proj-img-data" value="">
-                <p class="text-[10px] text-slate-500 mt-1 font-mono">Stored locally in your browser. Leave empty while editing to keep the current image.</p>
+                <p class="text-[10px] text-slate-500 mt-1 font-mono">Type an image filename (e.g. 1.png) or a full URL — this exact value is saved as the record's image path. The file picker is optional and only shows a local preview.</p>
               </div>
               <div>
                 <label class="text-xs font-mono text-slate-300">Description *</label>
@@ -662,15 +664,17 @@
                 <input type="text" id="new-gallery-tool" placeholder="e.g. Odin v3.14.4 / EDL Testpoint / DFU Clean Flash" value="Odin v3.14.4" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono focus:border-cyan-400 focus:outline-none">
               </div>
               <div>
-                <label class="text-xs font-mono text-slate-300">Screenshot / Photo (Upload from Device) *</label>
-                <div class="flex items-center gap-3 mt-1">
+                <label class="text-xs font-mono text-slate-300">Screenshot / Image URL or Filename *</label>
+                <div class="flex items-start gap-3 mt-1">
                   <div class="w-20 h-14 rounded-lg overflow-hidden bg-slate-950 border border-slate-800 shrink-0">
                     <img id="new-gallery-img-preview" src="" alt="Preview" class="w-full h-full object-cover">
                   </div>
-                  <input type="file" id="new-gallery-img-file" accept="image/*" onchange="handleImageUpload(event, 'new-gallery-img-preview', 'new-gallery-img-data')" class="flex-1 text-[11px] text-slate-400 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-[11px] file:font-mono file:font-semibold file:bg-cyan-950 file:text-cyan-300 hover:file:bg-cyan-900 file:cursor-pointer cursor-pointer">
+                  <div class="flex-1 space-y-2">
+                    <input type="text" id="new-gallery-img-path" placeholder="e.g. 1.png or https://example.com/photo.jpg" oninput="handleImagePathInput('new-gallery-img-path','new-gallery-img-preview')" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono focus:border-cyan-400 focus:outline-none">
+                    <input type="file" id="new-gallery-img-file" accept="image/*" onchange="handleImagePreview(event, 'new-gallery-img-preview', 'new-gallery-img-path')" class="w-full text-[11px] text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[11px] file:font-mono file:font-semibold file:bg-cyan-950 file:text-cyan-300 hover:file:bg-cyan-900 file:cursor-pointer cursor-pointer">
+                  </div>
                 </div>
-                <input type="hidden" id="new-gallery-img-data" value="">
-                <p class="text-[10px] text-slate-500 mt-1 font-mono">Stored locally in your browser. Leave empty while editing to keep the current image.</p>
+                <p class="text-[10px] text-slate-500 mt-1 font-mono">Type an image filename (e.g. 1.png) or a full URL — this exact value is saved as the record's image path. The file picker is optional and only shows a local preview.</p>
               </div>
               <div>
                 <label class="text-xs font-mono text-slate-300">Service Diagnostic Notes / Description *</label>
@@ -1192,9 +1196,21 @@
     }
 
     // ==========================================
-    // 3. IMAGE UPLOAD (FileReader -> Base64 -> localStorage)
+    // 3. IMAGE PATH INPUT (URL / filename is the saved value; file picker is preview-only)
     // ==========================================
-    function handleImageUpload(event, previewId, hiddenInputId) {
+
+    // Called when the URL / filename text field changes — updates the live preview.
+    // The typed value itself is what gets saved as the record's image path.
+    function handleImagePathInput(pathInputId, previewId) {
+      const val = document.getElementById(pathInputId).value.trim();
+      const preview = document.getElementById(previewId);
+      preview.src = val || PLACEHOLDER_IMAGE;
+    }
+
+    // Called when a local file is picked. This ONLY renders a local preview
+    // (via FileReader) and, if the path field is still empty, conveniently
+    // fills it in with the file's name — it does not save any image data itself.
+    function handleImagePreview(event, previewId, pathInputId) {
       const file = event.target.files && event.target.files[0];
       if (!file) return;
 
@@ -1204,10 +1220,14 @@
         return;
       }
 
+      const pathInput = document.getElementById(pathInputId);
+      if (pathInput && !pathInput.value.trim()) {
+        pathInput.value = file.name;
+      }
+
       const reader = new FileReader();
       reader.onload = function (e) {
         document.getElementById(previewId).src = e.target.result;
-        document.getElementById(hiddenInputId).value = e.target.result;
       };
       reader.onerror = function () {
         alert('Could not read the selected image. Please try a different file.');
@@ -1325,7 +1345,7 @@
     function resetProjectForm() {
       editingProjectId = null;
       document.getElementById('project-form').reset();
-      document.getElementById('new-proj-img-data').value = '';
+      document.getElementById('new-proj-img-path').value = '';
       document.getElementById('new-proj-img-file').value = '';
       document.getElementById('new-proj-img-preview').src = PLACEHOLDER_IMAGE;
       document.getElementById('project-form-submit-btn').innerText = 'Publish Project to Live Showcase';
@@ -1342,8 +1362,8 @@
       document.getElementById('new-proj-status').value = p.status;
       document.getElementById('new-proj-tags').value = (p.tags || []).join(', ');
       document.getElementById('new-proj-desc').value = p.description;
+      document.getElementById('new-proj-img-path').value = p.image || '';
       document.getElementById('new-proj-img-preview').src = p.image || PLACEHOLDER_IMAGE;
-      document.getElementById('new-proj-img-data').value = '';
       document.getElementById('new-proj-img-file').value = '';
       document.getElementById('project-form-submit-btn').innerText = 'Update Project Record';
       document.getElementById('project-form-cancel-btn').classList.remove('hidden');
@@ -1358,7 +1378,7 @@
       const cat = document.getElementById('new-proj-cat').value;
       const status = document.getElementById('new-proj-status').value;
       const tags = document.getElementById('new-proj-tags').value.split(',').map(t => t.trim()).filter(Boolean);
-      const imgData = document.getElementById('new-proj-img-data').value;
+      const imgPath = document.getElementById('new-proj-img-path').value.trim();
       const desc = document.getElementById('new-proj-desc').value.trim();
 
       if (editingProjectId) {
@@ -1367,7 +1387,7 @@
           projects[idx] = {
             ...projects[idx],
             title, category: cat, status, tags,
-            image: imgData || projects[idx].image,
+            image: imgPath || projects[idx].image,
             description: desc
           };
         }
@@ -1380,7 +1400,7 @@
           category: cat,
           status,
           tags,
-          image: imgData || PLACEHOLDER_IMAGE,
+          image: imgPath || PLACEHOLDER_IMAGE,
           description: desc,
           dateAdded: new Date().toISOString().split('T')[0]
         });
@@ -1400,7 +1420,7 @@
     function resetGalleryForm() {
       editingGalleryId = null;
       document.getElementById('gallery-form').reset();
-      document.getElementById('new-gallery-img-data').value = '';
+      document.getElementById('new-gallery-img-path').value = '';
       document.getElementById('new-gallery-img-file').value = '';
       document.getElementById('new-gallery-img-preview').src = PLACEHOLDER_IMAGE;
       document.getElementById('new-gallery-tool').value = 'Odin v3.14.4';
@@ -1419,8 +1439,8 @@
       document.getElementById('new-gallery-servicetag').value = item.serviceTag;
       document.getElementById('new-gallery-tool').value = item.tool;
       document.getElementById('new-gallery-desc').value = item.description;
+      document.getElementById('new-gallery-img-path').value = item.image || '';
       document.getElementById('new-gallery-img-preview').src = item.image || PLACEHOLDER_IMAGE;
-      document.getElementById('new-gallery-img-data').value = '';
       document.getElementById('new-gallery-img-file').value = '';
       document.getElementById('gallery-form-submit-btn').innerText = 'Update Gallery Record';
       document.getElementById('gallery-form-cancel-btn').classList.remove('hidden');
@@ -1436,18 +1456,18 @@
       const brand = document.getElementById('new-gallery-brand').value;
       const serviceTag = document.getElementById('new-gallery-servicetag').value.trim();
       const tool = document.getElementById('new-gallery-tool').value.trim();
-      const imgData = document.getElementById('new-gallery-img-data').value;
+      const imgPath = document.getElementById('new-gallery-img-path').value.trim();
       const desc = document.getElementById('new-gallery-desc').value.trim();
 
-      // An image is required unless we're editing a record that already has one
-      if (!imgData && !editingGalleryId) {
-        alert('Please upload a screenshot / photo of the device to continue.');
+      // An image path is required unless we're editing a record that already has one
+      if (!imgPath && !editingGalleryId) {
+        alert('Please enter an image filename or URL for the device screenshot to continue.');
         return;
       }
-      if (!imgData && editingGalleryId) {
+      if (!imgPath && editingGalleryId) {
         const existing = galleryItems.find(g => g.id === editingGalleryId);
         if (existing && !existing.image) {
-          alert('Please upload a screenshot / photo of the device to continue.');
+          alert('Please enter an image filename or URL for the device screenshot to continue.');
           return;
         }
       }
@@ -1463,7 +1483,7 @@
             ...galleryItems[idx],
             brand, brandName: brandDisplayName, model, title,
             serviceTag, tool: tool || "OEM Service Software",
-            image: imgData || galleryItems[idx].image,
+            image: imgPath || galleryItems[idx].image,
             description: desc
           };
         }
@@ -1479,7 +1499,7 @@
           serviceTag,
           tool: tool || "OEM Service Software",
           date: new Date().toISOString().split('T')[0],
-          image: imgData,
+          image: imgPath,
           description: desc
         });
         alert(`Device Service Record "${title}" successfully added to the Gallery!`);

@@ -497,9 +497,9 @@
     <p>&copy; 2026 Mithila / Kashmika. Full-Stack Developer &amp; Technical Specialist. All rights reserved.</p>
   </footer>
 
-  <!-- DYNAMIC ADMIN PANEL MODAL (UPDATED WITH TABS FOR PROJECTS & GALLERY) -->
+  <!-- MANAGEMENT DASHBOARD MODAL (ADD ENTRY + MANAGE EXISTING ENTRIES) -->
   <div id="admin-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-    <div class="relative w-full max-w-2xl bg-[#090e1d] border border-cyan-500/40 rounded-2xl p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto shadow-[0_0_50px_rgba(6,182,212,0.15)]">
+    <div class="relative w-full max-w-4xl bg-[#090e1d] border border-cyan-500/40 rounded-2xl p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto shadow-[0_0_50px_rgba(6,182,212,0.15)]">
       <button onclick="closeAdminModal()" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-white bg-slate-900 rounded-lg">
         <i class="fa-solid fa-xmark text-lg"></i>
       </button>
@@ -509,7 +509,7 @@
           <i class="fa-solid fa-lock"></i>
         </div>
         <div>
-          <h3 class="text-xl font-bold text-white">Admin Control Center</h3>
+          <h3 class="text-xl font-bold text-white">Management Dashboard</h3>
           <p class="text-xs text-slate-400">Manage showcase projects and mobile device service gallery records.</p>
         </div>
       </div>
@@ -536,7 +536,7 @@
         </form>
       </div>
 
-      <!-- Authenticated Manager View with Tabs -->
+      <!-- Authenticated Dashboard View -->
       <div id="admin-add-view" class="hidden space-y-5">
         <!-- Top Auth Status & Logout -->
         <div class="flex items-center justify-between border-b border-slate-800 pb-3">
@@ -547,107 +547,223 @@
           <button onclick="logoutAdmin()" class="text-xs font-mono text-slate-400 hover:text-rose-400 transition-colors">[Log Out]</button>
         </div>
 
-        <!-- Navigation Tabs: Projects vs Device Gallery -->
+        <!-- MAIN NAVIGATION TABS: Add New Entry vs Manage Existing Entries -->
         <div class="grid grid-cols-2 gap-2 p-1.5 bg-slate-950 rounded-xl border border-slate-800">
-          <button type="button" id="tab-btn-project" onclick="switchAdminTab('project')" class="py-2 px-3 rounded-lg text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all bg-cyan-500 text-[#070b14] shadow-sm">
-            <i class="fa-solid fa-diagram-project"></i>
-            <span>Add Project</span>
+          <button type="button" id="main-tab-btn-add" onclick="switchMainTab('add')" class="py-2.5 px-3 rounded-lg text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all bg-cyan-500 text-[#070b14] shadow-sm">
+            <i class="fa-solid fa-circle-plus"></i>
+            <span>Add New Entry</span>
           </button>
-          <button type="button" id="tab-btn-gallery" onclick="switchAdminTab('gallery')" class="py-2 px-3 rounded-lg text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all text-slate-400 hover:text-cyan-300">
-            <i class="fa-solid fa-screwdriver-wrench"></i>
-            <span>Add Gallery Item</span>
+          <button type="button" id="main-tab-btn-manage" onclick="switchMainTab('manage')" class="py-2.5 px-3 rounded-lg text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all text-slate-400 hover:text-cyan-300">
+            <i class="fa-solid fa-table-list"></i>
+            <span>Manage Existing Entries</span>
           </button>
         </div>
 
-        <!-- TAB 1: ADD PROJECT FORM -->
-        <div id="tab-content-project" class="space-y-4">
-          <form onsubmit="handleAddNewProject(event)" class="space-y-3">
-            <div>
-              <label class="text-xs font-mono text-slate-300">Project Title *</label>
-              <input type="text" id="new-proj-title" required placeholder="e.g. Distributed Telemetry Sensor" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm focus:border-cyan-400 focus:outline-none">
-            </div>
-            <div class="grid grid-cols-2 gap-3">
-              <div>
-                <label class="text-xs font-mono text-slate-300">Category</label>
-                <select id="new-proj-cat" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-200 text-xs focus:border-cyan-400 focus:outline-none">
-                  <option value="web">Web &amp; Systems</option>
-                  <option value="mobile">Mobile &amp; Firmware</option>
-                  <option value="automation">Automation Tools</option>
-                  <option value="system">PBX &amp; Telephony</option>
-                </select>
-              </div>
-              <div>
-                <label class="text-xs font-mono text-slate-300">Status</label>
-                <select id="new-proj-status" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-200 text-xs focus:border-cyan-400 focus:outline-none">
-                  <option value="In Production">In Production</option>
-                  <option value="Active Deployment">Active Deployment</option>
-                  <option value="Completed">Completed</option>
-                </select>
-              </div>
-            </div>
-            <div>
-              <label class="text-xs font-mono text-slate-300">Tags (Comma-separated)</label>
-              <input type="text" id="new-proj-tags" value="React, Python, Fastboot" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono focus:border-cyan-400 focus:outline-none">
-            </div>
-            <div>
-              <label class="text-xs font-mono text-slate-300">Screenshot / Image URL</label>
-              <input type="url" id="new-proj-img" value="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=900&q=80" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono focus:border-cyan-400 focus:outline-none">
-            </div>
-            <div>
-              <label class="text-xs font-mono text-slate-300">Description *</label>
-              <textarea id="new-proj-desc" required rows="3" placeholder="Describe the system..." class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm resize-none focus:border-cyan-400 focus:outline-none"></textarea>
-            </div>
-            <button type="submit" class="w-full py-2.5 px-4 text-xs font-mono font-bold text-[#070b14] bg-cyan-400 hover:bg-cyan-300 rounded-xl transition-all shadow-[0_0_15px_rgba(6,182,212,0.3)]">
-              Publish Project to Live Showcase
+        <!-- ========================================================= -->
+        <!-- MAIN TAB: ADD NEW ENTRY                                    -->
+        <!-- ========================================================= -->
+        <div id="main-tab-add" class="space-y-5">
+
+          <!-- Sub-Navigation Tabs: Projects vs Device Gallery -->
+          <div class="grid grid-cols-2 gap-2 p-1.5 bg-slate-950 rounded-xl border border-slate-800">
+            <button type="button" id="tab-btn-project" onclick="switchAdminTab('project')" class="py-2 px-3 rounded-lg text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all bg-cyan-500 text-[#070b14] shadow-sm">
+              <i class="fa-solid fa-diagram-project"></i>
+              <span>Project</span>
             </button>
-          </form>
+            <button type="button" id="tab-btn-gallery" onclick="switchAdminTab('gallery')" class="py-2 px-3 rounded-lg text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all text-slate-400 hover:text-cyan-300">
+              <i class="fa-solid fa-screwdriver-wrench"></i>
+              <span>Gallery Item</span>
+            </button>
+          </div>
+
+          <!-- TAB 1: PROJECT FORM (ADD / EDIT) -->
+          <div id="tab-content-project" class="space-y-4">
+            <form id="project-form" onsubmit="handleAddNewProject(event)" class="space-y-3">
+              <div>
+                <label class="text-xs font-mono text-slate-300">Project Title *</label>
+                <input type="text" id="new-proj-title" required placeholder="e.g. Distributed Telemetry Sensor" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm focus:border-cyan-400 focus:outline-none">
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="text-xs font-mono text-slate-300">Category</label>
+                  <select id="new-proj-cat" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-200 text-xs focus:border-cyan-400 focus:outline-none">
+                    <option value="web">Web &amp; Systems</option>
+                    <option value="mobile">Mobile &amp; Firmware</option>
+                    <option value="automation">Automation Tools</option>
+                    <option value="system">PBX &amp; Telephony</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="text-xs font-mono text-slate-300">Status</label>
+                  <select id="new-proj-status" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-200 text-xs focus:border-cyan-400 focus:outline-none">
+                    <option value="In Production">In Production</option>
+                    <option value="Active Deployment">Active Deployment</option>
+                    <option value="Completed">Completed</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label class="text-xs font-mono text-slate-300">Tags (Comma-separated)</label>
+                <input type="text" id="new-proj-tags" value="React, Python, Fastboot" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono focus:border-cyan-400 focus:outline-none">
+              </div>
+              <div>
+                <label class="text-xs font-mono text-slate-300">Screenshot Image (Upload from Device)</label>
+                <div class="flex items-center gap-3 mt-1">
+                  <div class="w-20 h-14 rounded-lg overflow-hidden bg-slate-950 border border-slate-800 shrink-0">
+                    <img id="new-proj-img-preview" src="" alt="Preview" class="w-full h-full object-cover">
+                  </div>
+                  <input type="file" id="new-proj-img-file" accept="image/*" onchange="handleImageUpload(event, 'new-proj-img-preview', 'new-proj-img-data')" class="flex-1 text-[11px] text-slate-400 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-[11px] file:font-mono file:font-semibold file:bg-cyan-950 file:text-cyan-300 hover:file:bg-cyan-900 file:cursor-pointer cursor-pointer">
+                </div>
+                <input type="hidden" id="new-proj-img-data" value="">
+                <p class="text-[10px] text-slate-500 mt-1 font-mono">Stored locally in your browser. Leave empty while editing to keep the current image.</p>
+              </div>
+              <div>
+                <label class="text-xs font-mono text-slate-300">Description *</label>
+                <textarea id="new-proj-desc" required rows="3" placeholder="Describe the system..." class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm resize-none focus:border-cyan-400 focus:outline-none"></textarea>
+              </div>
+              <div class="flex gap-2 pt-1">
+                <button type="submit" id="project-form-submit-btn" class="flex-1 py-2.5 px-4 text-xs font-mono font-bold text-[#070b14] bg-cyan-400 hover:bg-cyan-300 rounded-xl transition-all shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+                  Publish Project to Live Showcase
+                </button>
+                <button type="button" id="project-form-cancel-btn" onclick="resetProjectForm()" class="hidden py-2.5 px-4 text-xs font-mono font-semibold text-slate-300 bg-slate-900 border border-slate-700 hover:border-rose-400 hover:text-rose-300 rounded-xl transition-all">
+                  Cancel Edit
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- TAB 2: GALLERY ITEM FORM (ADD / EDIT) -->
+          <div id="tab-content-gallery" class="hidden space-y-4">
+            <form id="gallery-form" onsubmit="handleAddNewGalleryItem(event)" class="space-y-3">
+              <div>
+                <label class="text-xs font-mono text-slate-300">Device Model &amp; Identifier *</label>
+                <input type="text" id="new-gallery-model" required placeholder="e.g. Samsung Galaxy S23 Ultra (SM-S918B)" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm focus:border-cyan-400 focus:outline-none">
+              </div>
+              <div>
+                <label class="text-xs font-mono text-slate-300">Operation / Service Title *</label>
+                <input type="text" id="new-gallery-title" required placeholder="e.g. Knox Guard &amp; FRP Lock Removal" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm focus:border-cyan-400 focus:outline-none">
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="text-xs font-mono text-slate-300">Brand Tag *</label>
+                  <select id="new-gallery-brand" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-200 text-xs focus:border-cyan-400 focus:outline-none">
+                    <option value="samsung">Samsung</option>
+                    <option value="apple">iPhone / iOS</option>
+                    <option value="xiaomi">Xiaomi / Redmi</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="text-xs font-mono text-slate-300">Service Tag / Badge *</label>
+                  <input type="text" id="new-gallery-servicetag" required placeholder="e.g. FRP Lock Removed, Bootloop Fix, Odin Flashed" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono focus:border-cyan-400 focus:outline-none">
+                </div>
+              </div>
+              <div>
+                <label class="text-xs font-mono text-slate-300">Tool / Protocol Used</label>
+                <input type="text" id="new-gallery-tool" placeholder="e.g. Odin v3.14.4 / EDL Testpoint / DFU Clean Flash" value="Odin v3.14.4" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono focus:border-cyan-400 focus:outline-none">
+              </div>
+              <div>
+                <label class="text-xs font-mono text-slate-300">Screenshot / Photo (Upload from Device) *</label>
+                <div class="flex items-center gap-3 mt-1">
+                  <div class="w-20 h-14 rounded-lg overflow-hidden bg-slate-950 border border-slate-800 shrink-0">
+                    <img id="new-gallery-img-preview" src="" alt="Preview" class="w-full h-full object-cover">
+                  </div>
+                  <input type="file" id="new-gallery-img-file" accept="image/*" onchange="handleImageUpload(event, 'new-gallery-img-preview', 'new-gallery-img-data')" class="flex-1 text-[11px] text-slate-400 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-[11px] file:font-mono file:font-semibold file:bg-cyan-950 file:text-cyan-300 hover:file:bg-cyan-900 file:cursor-pointer cursor-pointer">
+                </div>
+                <input type="hidden" id="new-gallery-img-data" value="">
+                <p class="text-[10px] text-slate-500 mt-1 font-mono">Stored locally in your browser. Leave empty while editing to keep the current image.</p>
+              </div>
+              <div>
+                <label class="text-xs font-mono text-slate-300">Service Diagnostic Notes / Description *</label>
+                <textarea id="new-gallery-desc" required rows="2" placeholder="Describe the unlock, firmware restoration, or hardware salvage performed..." class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm resize-none focus:border-cyan-400 focus:outline-none"></textarea>
+              </div>
+              <div class="flex gap-2 pt-1">
+                <button type="submit" id="gallery-form-submit-btn" class="flex-1 py-2.5 px-4 text-xs font-mono font-bold text-[#070b14] bg-cyan-400 hover:bg-cyan-300 rounded-xl transition-all shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+                  Publish Record to Device Gallery
+                </button>
+                <button type="button" id="gallery-form-cancel-btn" onclick="resetGalleryForm()" class="hidden py-2.5 px-4 text-xs font-mono font-semibold text-slate-300 bg-slate-900 border border-slate-700 hover:border-rose-400 hover:text-rose-300 rounded-xl transition-all">
+                  Cancel Edit
+                </button>
+              </div>
+            </form>
+          </div>
+
         </div>
 
-        <!-- TAB 2: ADD GALLERY ITEM FORM (NEW) -->
-        <div id="tab-content-gallery" class="hidden space-y-4">
-          <form onsubmit="handleAddNewGalleryItem(event)" class="space-y-3">
-            <div>
-              <label class="text-xs font-mono text-slate-300">Device Model &amp; Identifier *</label>
-              <input type="text" id="new-gallery-model" required placeholder="e.g. Samsung Galaxy S23 Ultra (SM-S918B)" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm focus:border-cyan-400 focus:outline-none">
+        <!-- ========================================================= -->
+        <!-- MAIN TAB: MANAGE EXISTING ENTRIES                          -->
+        <!-- ========================================================= -->
+        <div id="main-tab-manage" class="hidden space-y-5">
+
+          <!-- Search + Utilities -->
+          <div class="flex flex-col sm:flex-row gap-2">
+            <div class="relative flex-1">
+              <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+              <input type="text" id="manage-search" oninput="renderManageList()" placeholder="Search by title, model, category, or brand..." class="w-full pl-9 pr-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono focus:border-cyan-400 focus:outline-none">
             </div>
-            <div>
-              <label class="text-xs font-mono text-slate-300">Operation / Service Title *</label>
-              <input type="text" id="new-gallery-title" required placeholder="e.g. Knox Guard &amp; FRP Lock Removal" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm focus:border-cyan-400 focus:outline-none">
+            <div class="flex gap-2 shrink-0">
+              <button type="button" onclick="exportBackup()" class="flex items-center gap-1.5 px-3 py-2 text-[11px] font-mono font-semibold text-cyan-300 bg-cyan-950 border border-cyan-800 rounded-xl hover:bg-cyan-900 transition-all whitespace-nowrap">
+                <i class="fa-solid fa-download"></i>
+                <span>Backup Data</span>
+              </button>
+              <button type="button" onclick="confirmRestoreDefaults()" class="flex items-center gap-1.5 px-3 py-2 text-[11px] font-mono font-semibold text-amber-300 bg-amber-950/60 border border-amber-800 rounded-xl hover:bg-amber-900/60 transition-all whitespace-nowrap">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <span>Restore Defaults</span>
+              </button>
             </div>
-            <div class="grid grid-cols-2 gap-3">
-              <div>
-                <label class="text-xs font-mono text-slate-300">Brand Tag *</label>
-                <select id="new-gallery-brand" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-200 text-xs focus:border-cyan-400 focus:outline-none">
-                  <option value="samsung">Samsung</option>
-                  <option value="apple">iPhone / iOS</option>
-                  <option value="xiaomi">Xiaomi / Redmi</option>
-                </select>
-              </div>
-              <div>
-                <label class="text-xs font-mono text-slate-300">Service Tag / Badge *</label>
-                <input type="text" id="new-gallery-servicetag" required placeholder="e.g. FRP Lock Removed, Bootloop Fix, Odin Flashed" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono focus:border-cyan-400 focus:outline-none">
-              </div>
-            </div>
-            <div>
-              <label class="text-xs font-mono text-slate-300">Tool / Protocol Used</label>
-              <input type="text" id="new-gallery-tool" placeholder="e.g. Odin v3.14.4 / EDL Testpoint / DFU Clean Flash" value="Odin v3.14.4" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono focus:border-cyan-400 focus:outline-none">
-            </div>
-            <div>
-              <label class="text-xs font-mono text-slate-300">Screenshot / Photo Image URL *</label>
-              <input type="url" id="new-gallery-img" required value="https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=900&q=80" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono focus:border-cyan-400 focus:outline-none">
-            </div>
-            <div>
-              <label class="text-xs font-mono text-slate-300">Service Diagnostic Notes / Description *</label>
-              <textarea id="new-gallery-desc" required rows="2" placeholder="Describe the unlock, firmware restoration, or hardware salvage performed..." class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm resize-none focus:border-cyan-400 focus:outline-none"></textarea>
-            </div>
-            <button type="submit" class="w-full py-2.5 px-4 text-xs font-mono font-bold text-[#070b14] bg-cyan-400 hover:bg-cyan-300 rounded-xl transition-all shadow-[0_0_15px_rgba(6,182,212,0.3)]">
-              Publish Record to Device Gallery
+          </div>
+
+          <!-- Sub-Navigation Tabs: Manage Projects vs Manage Gallery -->
+          <div class="grid grid-cols-2 gap-2 p-1.5 bg-slate-950 rounded-xl border border-slate-800">
+            <button type="button" id="manage-tab-btn-project" onclick="switchManageTab('project')" class="py-2 px-3 rounded-lg text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all bg-cyan-500 text-[#070b14] shadow-sm">
+              <i class="fa-solid fa-diagram-project"></i>
+              <span id="manage-count-project">Projects (0)</span>
             </button>
-          </form>
+            <button type="button" id="manage-tab-btn-gallery" onclick="switchManageTab('gallery')" class="py-2 px-3 rounded-lg text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all text-slate-400 hover:text-cyan-300">
+              <i class="fa-solid fa-screwdriver-wrench"></i>
+              <span id="manage-count-gallery">Gallery Items (0)</span>
+            </button>
+          </div>
+
+          <!-- Table Header (desktop only) -->
+          <div class="hidden sm:grid grid-cols-[64px_1fr_140px_100px_140px] gap-3 px-3 text-[10px] font-mono uppercase tracking-wider text-slate-500">
+            <span>Thumb</span>
+            <span>Title / Device</span>
+            <span>Category / Brand</span>
+            <span>Date Added</span>
+            <span class="text-right">Actions</span>
+          </div>
+
+          <!-- Manage List: Projects -->
+          <div id="manage-project-list" class="space-y-2 max-h-[45vh] overflow-y-auto pr-1"></div>
+
+          <!-- Manage List: Gallery -->
+          <div id="manage-gallery-list" class="hidden space-y-2 max-h-[45vh] overflow-y-auto pr-1"></div>
+
         </div>
 
       </div>
 
+    </div>
+  </div>
+
+  <!-- REUSABLE CONFIRMATION MODAL (DELETE / RESTORE DEFAULTS) -->
+  <div id="confirm-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+    <div class="relative w-full max-w-sm bg-[#090e1d] border border-rose-500/40 rounded-2xl p-6 space-y-5 shadow-[0_0_50px_rgba(244,63,94,0.15)]">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-rose-950 border border-rose-500/40 flex items-center justify-center text-rose-400">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h3 class="text-base font-bold text-white">Confirm Action</h3>
+      </div>
+      <p id="confirm-modal-message" class="text-sm text-slate-300 leading-relaxed"></p>
+      <div class="flex gap-2 justify-end pt-1">
+        <button type="button" onclick="closeConfirmModal()" class="px-4 py-2 text-xs font-mono font-semibold text-slate-300 bg-slate-900 border border-slate-700 rounded-xl hover:border-slate-500 transition-all">
+          Cancel
+        </button>
+        <button type="button" onclick="executeConfirmedAction()" class="px-4 py-2 text-xs font-mono font-bold text-white bg-rose-500 hover:bg-rose-400 rounded-xl transition-all">
+          Confirm
+        </button>
+      </div>
     </div>
   </div>
 
@@ -701,9 +817,25 @@
   <!-- JAVASCRIPT LOGIC -->
   <script>
     // ==========================================
-    // 1. PROJECTS DATA & FUNCTIONS
+    // PLACEHOLDER IMAGE (used when no upload is provided for an optional image)
     // ==========================================
-    let projects = [
+    const PLACEHOLDER_IMAGE = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="480" height="360">' +
+      '<rect width="100%" height="100%" fill="#0c1326"/>' +
+      '<text x="50%" y="50%" fill="#334155" font-family="monospace" font-size="20" text-anchor="middle" dominant-baseline="middle">NO IMAGE</text>' +
+      '</svg>'
+    );
+
+    // ==========================================
+    // LOCAL STORAGE KEYS
+    // ==========================================
+    const STORAGE_KEY_PROJECTS = 'kashmika_portfolio_projects_v1';
+    const STORAGE_KEY_GALLERY = 'kashmika_portfolio_gallery_v1';
+
+    // ==========================================
+    // 1. PROJECTS DEFAULT DATA
+    // ==========================================
+    const DEFAULT_PROJECTS = [
       {
         id: "proj-1789575460776",
         title: "Distributed Telemetry Sensor Hub",
@@ -713,7 +845,8 @@
         longDescription: "Engineered with precision for robust uptime and modular scalability across multi-node edge controllers.",
         image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80",
         status: "In Production",
-        featured: true
+        featured: true,
+        dateAdded: "2026-02-20"
       },
       {
         id: "proj-1",
@@ -724,7 +857,8 @@
         featured: true,
         image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80",
         description: "Comprehensive enterprise portal for employee attendance tracking, automated salary calculation, leave approval workflow, and payslip generation.",
-        longDescription: "Engineered an end-to-end personnel and payroll management system for growing enterprises. Features automated overtime calculations, statutory deduction algorithms, role-based access for HR and employees, and instant PDF payslip distribution."
+        longDescription: "Engineered an end-to-end personnel and payroll management system for growing enterprises. Features automated overtime calculations, statutory deduction algorithms, role-based access for HR and employees, and instant PDF payslip distribution.",
+        dateAdded: "2025-11-10"
       },
       {
         id: "proj-2",
@@ -735,7 +869,8 @@
         featured: true,
         image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=900&q=80",
         description: "High-accuracy License Plate Recognition (LPR) mobile telemetry solution for inventory tracking, vehicle entry logs, and real-time alerts.",
-        longDescription: "Specialized mobile and backend system tailored for automotive inventory management. Utilizes lightweight OCR algorithms to capture and verify vehicle registration numbers under variable outdoor lighting conditions with instant synchronization to central dispatch."
+        longDescription: "Specialized mobile and backend system tailored for automotive inventory management. Utilizes lightweight OCR algorithms to capture and verify vehicle registration numbers under variable outdoor lighting conditions with instant synchronization to central dispatch.",
+        dateAdded: "2025-12-02"
       },
       {
         id: "proj-3",
@@ -746,7 +881,8 @@
         featured: true,
         image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=900&q=80",
         description: "Fast, client-side digital billing utility enabling retail counter staff to format, calculate taxes, apply discounts, and generate print-ready tax invoices in seconds.",
-        longDescription: "Created a zero-latency web application designed for fast point-of-sale receipt issuance. Operates seamlessly offline with localStorage cache, supports multiple currency formats, customizable itemized lines, and thermal printer receipt outputs."
+        longDescription: "Created a zero-latency web application designed for fast point-of-sale receipt issuance. Operates seamlessly offline with localStorage cache, supports multiple currency formats, customizable itemized lines, and thermal printer receipt outputs.",
+        dateAdded: "2026-01-05"
       },
       {
         id: "proj-4",
@@ -757,39 +893,15 @@
         featured: true,
         image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",
         description: "Automated dynamic call routing and after-hours escalation matrix integrated with 3CX Enterprise PBX, ensuring seamless client availability.",
-        longDescription: "Configured and deployed an automated rule engine for a multi-branch corporate telephony infrastructure. Handles time-based forwarding, emergency on-call developer rotation, SMS alert dispatching, and SIP trunk failover monitoring."
+        longDescription: "Configured and deployed an automated rule engine for a multi-branch corporate telephony infrastructure. Handles time-based forwarding, emergency on-call developer rotation, SMS alert dispatching, and SIP trunk failover monitoring.",
+        dateAdded: "2026-01-28"
       }
     ];
 
-    function renderProjects() {
-      const grid = document.getElementById('projects-grid');
-      if (!grid) return;
-      grid.innerHTML = projects.map(p => `
-        <div class="rounded-2xl bg-gradient-to-b from-slate-900 via-[#0a0f21] to-[#070b16] border border-slate-800 hover:border-cyan-500/50 overflow-hidden flex flex-col justify-between transition-all group">
-          <div class="aspect-video w-full bg-slate-950 relative overflow-hidden">
-            <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-            <span class="absolute top-3 left-3 px-2 py-0.5 rounded bg-black/80 text-[10px] font-mono text-cyan-300 border border-cyan-800">${p.category.toUpperCase()}</span>
-            <span class="absolute top-3 right-3 px-2 py-0.5 rounded bg-black/80 text-[10px] font-mono text-emerald-400 border border-slate-700">${p.status}</span>
-          </div>
-          <div class="p-6 space-y-3 flex-1 flex flex-col justify-between">
-            <div>
-              <h3 class="text-xl font-bold text-white">${p.title}</h3>
-              <p class="text-sm text-slate-400 mt-2">${p.description}</p>
-            </div>
-            <div class="pt-3 border-t border-slate-800 space-y-2">
-              <div class="flex flex-wrap gap-1.5">
-                ${p.tags.map(t => `<span class="px-2 py-0.5 rounded bg-slate-950 text-[11px] font-mono text-cyan-300 border border-slate-800">${t}</span>`).join('')}
-              </div>
-            </div>
-          </div>
-        </div>
-      `).join('');
-    }
-
     // ==========================================
-    // 2. DEVICE REPAIR & SERVICE GALLERY DATA & LOGIC
+    // 2. DEVICE REPAIR & SERVICE GALLERY DEFAULT DATA
     // ==========================================
-    let galleryItems = [
+    const DEFAULT_GALLERY = [
       {
         id: "gallery-1",
         brand: "samsung",
@@ -864,7 +976,76 @@
       }
     ];
 
-    let currentGalleryFilter = 'all';
+    // ==========================================
+    // PERSISTENCE HELPERS (localStorage)
+    // ==========================================
+    function loadProjects() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY_PROJECTS);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {
+        console.warn('Could not parse stored projects, falling back to defaults.', e);
+      }
+      return JSON.parse(JSON.stringify(DEFAULT_PROJECTS));
+    }
+
+    function loadGallery() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY_GALLERY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {
+        console.warn('Could not parse stored gallery items, falling back to defaults.', e);
+      }
+      return JSON.parse(JSON.stringify(DEFAULT_GALLERY));
+    }
+
+    function saveProjects() {
+      try {
+        localStorage.setItem(STORAGE_KEY_PROJECTS, JSON.stringify(projects));
+      } catch (e) {
+        alert('Could not save projects locally. Your browser storage may be full.');
+      }
+    }
+
+    function saveGallery() {
+      try {
+        localStorage.setItem(STORAGE_KEY_GALLERY, JSON.stringify(galleryItems));
+      } catch (e) {
+        alert('Could not save gallery items locally. Your browser storage may be full.');
+      }
+    }
+
+    let projects = loadProjects();
+    let galleryItems = loadGallery();
+
+    // Track whether an existing record is being edited (null = adding new)
+    let editingProjectId = null;
+    let editingGalleryId = null;
+
+    function renderProjects() {
+      const grid = document.getElementById('projects-grid');
+      if (!grid) return;
+      grid.innerHTML = projects.map(p => `
+        <div class="rounded-2xl bg-gradient-to-b from-slate-900 via-[#0a0f21] to-[#070b16] border border-slate-800 hover:border-cyan-500/50 overflow-hidden flex flex-col justify-between transition-all group">
+          <div class="aspect-video w-full bg-slate-950 relative overflow-hidden">
+            <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <span class="absolute top-3 left-3 px-2 py-0.5 rounded bg-black/80 text-[10px] font-mono text-cyan-300 border border-cyan-800">${p.category.toUpperCase()}</span>
+            <span class="absolute top-3 right-3 px-2 py-0.5 rounded bg-black/80 text-[10px] font-mono text-emerald-400 border border-slate-700">${p.status}</span>
+          </div>
+          <div class="p-6 space-y-3 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-xl font-bold text-white">${p.title}</h3>
+              <p class="text-sm text-slate-400 mt-2">${p.description}</p>
+            </div>
+            <div class="pt-3 border-t border-slate-800 space-y-2">
+              <div class="flex flex-wrap gap-1.5">
+                ${p.tags.map(t => `<span class="px-2 py-0.5 rounded bg-slate-950 text-[11px] font-mono text-cyan-300 border border-slate-800">${t}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
 
     function updateGalleryCounts() {
       const allCount = galleryItems.length;
@@ -883,14 +1064,16 @@
       if (elXiaomi) elXiaomi.innerText = xiaomiCount;
     }
 
+    let currentGalleryFilter = 'all';
+
     function renderGallery(filter = 'all') {
       currentGalleryFilter = filter;
       const grid = document.getElementById('gallery-grid');
       const emptyState = document.getElementById('gallery-empty');
       if (!grid) return;
 
-      const filteredItems = filter === 'all' 
-        ? galleryItems 
+      const filteredItems = filter === 'all'
+        ? galleryItems
         : galleryItems.filter(item => item.brand.toLowerCase() === filter.toLowerCase());
 
       if (filteredItems.length === 0) {
@@ -1009,20 +1192,70 @@
     }
 
     // ==========================================
-    // 3. ADMIN MODAL & TAB CONTROL
+    // 3. IMAGE UPLOAD (FileReader -> Base64 -> localStorage)
+    // ==========================================
+    function handleImageUpload(event, previewId, hiddenInputId) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith('image/')) {
+        alert('Please select a valid image file.');
+        event.target.value = '';
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        document.getElementById(previewId).src = e.target.result;
+        document.getElementById(hiddenInputId).value = e.target.result;
+      };
+      reader.onerror = function () {
+        alert('Could not read the selected image. Please try a different file.');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // ==========================================
+    // 4. ADMIN MODAL & TAB CONTROL
     // ==========================================
     let currentAdminTab = 'project';
+
+    const TAB_ACTIVE_CLASS = "py-2 px-3 rounded-lg text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all bg-cyan-500 text-[#070b14] shadow-sm";
+    const TAB_INACTIVE_CLASS = "py-2 px-3 rounded-lg text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all text-slate-400 hover:text-cyan-300";
+    const MAIN_TAB_ACTIVE_CLASS = "py-2.5 px-3 rounded-lg text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all bg-cyan-500 text-[#070b14] shadow-sm";
+    const MAIN_TAB_INACTIVE_CLASS = "py-2.5 px-3 rounded-lg text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all text-slate-400 hover:text-cyan-300";
 
     function openAdminModal(defaultTab = 'project') {
       currentAdminTab = defaultTab;
       document.getElementById('admin-modal').classList.remove('hidden');
       if (!document.getElementById('admin-add-view').classList.contains('hidden')) {
+        switchMainTab('add');
         switchAdminTab(defaultTab);
       }
     }
 
     function closeAdminModal() {
       document.getElementById('admin-modal').classList.add('hidden');
+    }
+
+    function switchMainTab(tab) {
+      const btnAdd = document.getElementById('main-tab-btn-add');
+      const btnManage = document.getElementById('main-tab-btn-manage');
+      const contentAdd = document.getElementById('main-tab-add');
+      const contentManage = document.getElementById('main-tab-manage');
+
+      if (tab === 'manage') {
+        btnManage.className = MAIN_TAB_ACTIVE_CLASS;
+        btnAdd.className = MAIN_TAB_INACTIVE_CLASS;
+        contentManage.classList.remove('hidden');
+        contentAdd.classList.add('hidden');
+        renderManageList();
+      } else {
+        btnAdd.className = MAIN_TAB_ACTIVE_CLASS;
+        btnManage.className = MAIN_TAB_INACTIVE_CLASS;
+        contentAdd.classList.remove('hidden');
+        contentManage.classList.add('hidden');
+      }
     }
 
     function switchAdminTab(tabName) {
@@ -1033,15 +1266,34 @@
       const contentGall = document.getElementById('tab-content-gallery');
 
       if (tabName === 'project') {
-        btnProj.className = "py-2 px-3 rounded-lg text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all bg-cyan-500 text-[#070b14] shadow-sm";
-        btnGall.className = "py-2 px-3 rounded-lg text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all text-slate-400 hover:text-cyan-300";
+        btnProj.className = TAB_ACTIVE_CLASS;
+        btnGall.className = TAB_INACTIVE_CLASS;
         contentProj.classList.remove('hidden');
         contentGall.classList.add('hidden');
       } else {
-        btnGall.className = "py-2 px-3 rounded-lg text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all bg-cyan-500 text-[#070b14] shadow-sm";
-        btnProj.className = "py-2 px-3 rounded-lg text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all text-slate-400 hover:text-cyan-300";
+        btnGall.className = TAB_ACTIVE_CLASS;
+        btnProj.className = TAB_INACTIVE_CLASS;
         contentGall.classList.remove('hidden');
         contentProj.classList.add('hidden');
+      }
+    }
+
+    function switchManageTab(tabName) {
+      const btnProj = document.getElementById('manage-tab-btn-project');
+      const btnGall = document.getElementById('manage-tab-btn-gallery');
+      const listProj = document.getElementById('manage-project-list');
+      const listGall = document.getElementById('manage-gallery-list');
+
+      if (tabName === 'project') {
+        btnProj.className = TAB_ACTIVE_CLASS;
+        btnGall.className = TAB_INACTIVE_CLASS;
+        listProj.classList.remove('hidden');
+        listGall.classList.add('hidden');
+      } else {
+        btnGall.className = TAB_ACTIVE_CLASS;
+        btnProj.className = TAB_INACTIVE_CLASS;
+        listGall.classList.remove('hidden');
+        listProj.classList.add('hidden');
       }
     }
 
@@ -1049,90 +1301,371 @@
       e.preventDefault();
       document.getElementById('admin-login-view').classList.add('hidden');
       document.getElementById('admin-add-view').classList.remove('hidden');
+      switchMainTab('add');
       switchAdminTab(currentAdminTab);
     }
 
     function quickDemoLogin() {
       document.getElementById('admin-login-view').classList.add('hidden');
       document.getElementById('admin-add-view').classList.remove('hidden');
+      switchMainTab('add');
       switchAdminTab(currentAdminTab);
     }
 
     function logoutAdmin() {
       document.getElementById('admin-add-view').classList.add('hidden');
       document.getElementById('admin-login-view').classList.remove('hidden');
+      resetProjectForm();
+      resetGalleryForm();
+    }
+
+    // ==========================================
+    // 5. PROJECT FORM: ADD / EDIT / RESET
+    // ==========================================
+    function resetProjectForm() {
+      editingProjectId = null;
+      document.getElementById('project-form').reset();
+      document.getElementById('new-proj-img-data').value = '';
+      document.getElementById('new-proj-img-file').value = '';
+      document.getElementById('new-proj-img-preview').src = PLACEHOLDER_IMAGE;
+      document.getElementById('project-form-submit-btn').innerText = 'Publish Project to Live Showcase';
+      document.getElementById('project-form-cancel-btn').classList.add('hidden');
+    }
+
+    function editProject(id) {
+      const p = projects.find(x => x.id === id);
+      if (!p) return;
+      editingProjectId = id;
+
+      document.getElementById('new-proj-title').value = p.title;
+      document.getElementById('new-proj-cat').value = p.category;
+      document.getElementById('new-proj-status').value = p.status;
+      document.getElementById('new-proj-tags').value = (p.tags || []).join(', ');
+      document.getElementById('new-proj-desc').value = p.description;
+      document.getElementById('new-proj-img-preview').src = p.image || PLACEHOLDER_IMAGE;
+      document.getElementById('new-proj-img-data').value = '';
+      document.getElementById('new-proj-img-file').value = '';
+      document.getElementById('project-form-submit-btn').innerText = 'Update Project Record';
+      document.getElementById('project-form-cancel-btn').classList.remove('hidden');
+
+      switchMainTab('add');
+      switchAdminTab('project');
     }
 
     function handleAddNewProject(e) {
       e.preventDefault();
-      const title = document.getElementById('new-proj-title').value;
+      const title = document.getElementById('new-proj-title').value.trim();
       const cat = document.getElementById('new-proj-cat').value;
       const status = document.getElementById('new-proj-status').value;
-      const tags = document.getElementById('new-proj-tags').value.split(',').map(t => t.trim());
-      const img = document.getElementById('new-proj-img').value;
-      const desc = document.getElementById('new-proj-desc').value;
+      const tags = document.getElementById('new-proj-tags').value.split(',').map(t => t.trim()).filter(Boolean);
+      const imgData = document.getElementById('new-proj-img-data').value;
+      const desc = document.getElementById('new-proj-desc').value.trim();
 
-      projects.unshift({
-        id: 'proj-' + Date.now(),
-        title: title,
-        category: cat,
-        status: status,
-        tags: tags,
-        image: img,
-        description: desc
-      });
+      if (editingProjectId) {
+        const idx = projects.findIndex(p => p.id === editingProjectId);
+        if (idx > -1) {
+          projects[idx] = {
+            ...projects[idx],
+            title, category: cat, status, tags,
+            image: imgData || projects[idx].image,
+            description: desc
+          };
+        }
+        editingProjectId = null;
+        alert('Project record successfully updated!');
+      } else {
+        projects.unshift({
+          id: 'proj-' + Date.now(),
+          title,
+          category: cat,
+          status,
+          tags,
+          image: imgData || PLACEHOLDER_IMAGE,
+          description: desc,
+          dateAdded: new Date().toISOString().split('T')[0]
+        });
+        alert('Project successfully added to the live showcase!');
+      }
 
+      saveProjects();
       renderProjects();
+      renderManageList();
+      resetProjectForm();
       closeAdminModal();
-      document.getElementById('new-proj-title').value = '';
-      document.getElementById('new-proj-desc').value = '';
-      alert('Project successfully added to the live showcase!');
+    }
+
+    // ==========================================
+    // 6. GALLERY FORM: ADD / EDIT / RESET
+    // ==========================================
+    function resetGalleryForm() {
+      editingGalleryId = null;
+      document.getElementById('gallery-form').reset();
+      document.getElementById('new-gallery-img-data').value = '';
+      document.getElementById('new-gallery-img-file').value = '';
+      document.getElementById('new-gallery-img-preview').src = PLACEHOLDER_IMAGE;
+      document.getElementById('new-gallery-tool').value = 'Odin v3.14.4';
+      document.getElementById('gallery-form-submit-btn').innerText = 'Publish Record to Device Gallery';
+      document.getElementById('gallery-form-cancel-btn').classList.add('hidden');
+    }
+
+    function editGalleryItem(id) {
+      const item = galleryItems.find(x => x.id === id);
+      if (!item) return;
+      editingGalleryId = id;
+
+      document.getElementById('new-gallery-model').value = item.model;
+      document.getElementById('new-gallery-title').value = item.title;
+      document.getElementById('new-gallery-brand').value = item.brand;
+      document.getElementById('new-gallery-servicetag').value = item.serviceTag;
+      document.getElementById('new-gallery-tool').value = item.tool;
+      document.getElementById('new-gallery-desc').value = item.description;
+      document.getElementById('new-gallery-img-preview').src = item.image || PLACEHOLDER_IMAGE;
+      document.getElementById('new-gallery-img-data').value = '';
+      document.getElementById('new-gallery-img-file').value = '';
+      document.getElementById('gallery-form-submit-btn').innerText = 'Update Gallery Record';
+      document.getElementById('gallery-form-cancel-btn').classList.remove('hidden');
+
+      switchMainTab('add');
+      switchAdminTab('gallery');
     }
 
     function handleAddNewGalleryItem(e) {
       e.preventDefault();
-      const model = document.getElementById('new-gallery-model').value;
-      const title = document.getElementById('new-gallery-title').value;
+      const model = document.getElementById('new-gallery-model').value.trim();
+      const title = document.getElementById('new-gallery-title').value.trim();
       const brand = document.getElementById('new-gallery-brand').value;
-      const serviceTag = document.getElementById('new-gallery-servicetag').value;
-      const tool = document.getElementById('new-gallery-tool').value;
-      const img = document.getElementById('new-gallery-img').value;
-      const desc = document.getElementById('new-gallery-desc').value;
+      const serviceTag = document.getElementById('new-gallery-servicetag').value.trim();
+      const tool = document.getElementById('new-gallery-tool').value.trim();
+      const imgData = document.getElementById('new-gallery-img-data').value;
+      const desc = document.getElementById('new-gallery-desc').value.trim();
+
+      // An image is required unless we're editing a record that already has one
+      if (!imgData && !editingGalleryId) {
+        alert('Please upload a screenshot / photo of the device to continue.');
+        return;
+      }
+      if (!imgData && editingGalleryId) {
+        const existing = galleryItems.find(g => g.id === editingGalleryId);
+        if (existing && !existing.image) {
+          alert('Please upload a screenshot / photo of the device to continue.');
+          return;
+        }
+      }
 
       let brandDisplayName = "Samsung";
       if (brand === 'apple') brandDisplayName = "iPhone / iOS";
       if (brand === 'xiaomi') brandDisplayName = "Xiaomi / Redmi";
 
-      const newItem = {
-        id: 'gallery-' + Date.now(),
-        brand: brand,
-        brandName: brandDisplayName,
-        model: model,
-        title: title,
-        serviceTag: serviceTag,
-        tool: tool || "OEM Service Software",
-        date: new Date().toISOString().split('T')[0],
-        image: img,
-        description: desc
-      };
+      if (editingGalleryId) {
+        const idx = galleryItems.findIndex(g => g.id === editingGalleryId);
+        if (idx > -1) {
+          galleryItems[idx] = {
+            ...galleryItems[idx],
+            brand, brandName: brandDisplayName, model, title,
+            serviceTag, tool: tool || "OEM Service Software",
+            image: imgData || galleryItems[idx].image,
+            description: desc
+          };
+        }
+        editingGalleryId = null;
+        alert(`Device Service Record "${title}" successfully updated!`);
+      } else {
+        galleryItems.unshift({
+          id: 'gallery-' + Date.now(),
+          brand,
+          brandName: brandDisplayName,
+          model,
+          title,
+          serviceTag,
+          tool: tool || "OEM Service Software",
+          date: new Date().toISOString().split('T')[0],
+          image: imgData,
+          description: desc
+        });
+        alert(`Device Service Record "${title}" successfully added to the Gallery!`);
+      }
 
-      galleryItems.unshift(newItem);
+      saveGallery();
       renderGallery(currentGalleryFilter);
+      renderManageList();
+      resetGalleryForm();
       closeAdminModal();
+    }
 
-      // Clear input fields
-      document.getElementById('new-gallery-model').value = '';
-      document.getElementById('new-gallery-title').value = '';
-      document.getElementById('new-gallery-servicetag').value = '';
-      document.getElementById('new-gallery-desc').value = '';
+    // ==========================================
+    // 7. MANAGE EXISTING ENTRIES: SEARCH, RENDER, EDIT, DELETE
+    // ==========================================
+    function renderManageList() {
+      renderManageProjects();
+      renderManageGallery();
+    }
 
-      alert(`Device Service Record "${title}" successfully added to the Gallery!`);
+    function renderManageProjects() {
+      const container = document.getElementById('manage-project-list');
+      const countLabel = document.getElementById('manage-count-project');
+      if (!container) return;
+
+      const search = (document.getElementById('manage-search')?.value || '').toLowerCase().trim();
+      const filtered = projects.filter(p =>
+        !search ||
+        p.title.toLowerCase().includes(search) ||
+        p.category.toLowerCase().includes(search) ||
+        (p.tags || []).join(' ').toLowerCase().includes(search)
+      );
+
+      if (countLabel) countLabel.innerText = `Projects (${projects.length})`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<p class="text-center text-xs text-slate-500 py-8 font-mono">No matching project records found.</p>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(p => `
+        <div class="grid grid-cols-1 sm:grid-cols-[64px_1fr_140px_100px_140px] gap-3 items-center p-3 rounded-xl bg-slate-950 border border-slate-800 hover:border-cyan-500/40 transition-colors">
+          <img src="${p.image}" alt="${p.title}" class="w-full h-24 sm:w-16 sm:h-12 rounded-lg object-cover border border-slate-800">
+          <div class="min-w-0">
+            <p class="text-sm font-bold text-white truncate">${p.title}</p>
+            <p class="text-[11px] font-mono text-slate-500 sm:hidden mt-0.5">${p.category} &middot; ${p.dateAdded || '—'}</p>
+          </div>
+          <div class="hidden sm:block text-[11px] font-mono text-cyan-300 truncate">${p.category} &middot; ${p.status}</div>
+          <div class="hidden sm:block text-[11px] font-mono text-slate-500">${p.dateAdded || '—'}</div>
+          <div class="flex items-center gap-2 sm:justify-end">
+            <button onclick="editProject('${p.id}')" class="flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-[11px] font-mono font-semibold text-cyan-300 bg-cyan-950 border border-cyan-800 hover:bg-cyan-900 transition-colors">
+              <i class="fa-solid fa-pen-to-square"></i> Edit
+            </button>
+            <button onclick="requestDeleteProject('${p.id}')" class="flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-[11px] font-mono font-semibold text-rose-300 bg-rose-950 border border-rose-900 hover:bg-rose-900 transition-colors">
+              <i class="fa-solid fa-trash"></i> Delete
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderManageGallery() {
+      const container = document.getElementById('manage-gallery-list');
+      const countLabel = document.getElementById('manage-count-gallery');
+      if (!container) return;
+
+      const search = (document.getElementById('manage-search')?.value || '').toLowerCase().trim();
+      const filtered = galleryItems.filter(g =>
+        !search ||
+        g.model.toLowerCase().includes(search) ||
+        g.title.toLowerCase().includes(search) ||
+        g.brand.toLowerCase().includes(search) ||
+        (g.brandName || '').toLowerCase().includes(search) ||
+        g.serviceTag.toLowerCase().includes(search)
+      );
+
+      if (countLabel) countLabel.innerText = `Gallery Items (${galleryItems.length})`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<p class="text-center text-xs text-slate-500 py-8 font-mono">No matching gallery records found.</p>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(g => `
+        <div class="grid grid-cols-1 sm:grid-cols-[64px_1fr_140px_100px_140px] gap-3 items-center p-3 rounded-xl bg-slate-950 border border-slate-800 hover:border-cyan-500/40 transition-colors">
+          <img src="${g.image}" alt="${g.model}" class="w-full h-24 sm:w-16 sm:h-12 rounded-lg object-cover border border-slate-800">
+          <div class="min-w-0">
+            <p class="text-sm font-bold text-white truncate">${g.title}</p>
+            <p class="text-[11px] font-mono text-slate-500 truncate">${g.model}</p>
+          </div>
+          <div class="hidden sm:block text-[11px] font-mono text-cyan-300 truncate">${g.brandName || g.brand}</div>
+          <div class="hidden sm:block text-[11px] font-mono text-slate-500">${g.date || '—'}</div>
+          <div class="flex items-center gap-2 sm:justify-end">
+            <button onclick="editGalleryItem('${g.id}')" class="flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-[11px] font-mono font-semibold text-cyan-300 bg-cyan-950 border border-cyan-800 hover:bg-cyan-900 transition-colors">
+              <i class="fa-solid fa-pen-to-square"></i> Edit
+            </button>
+            <button onclick="requestDeleteGallery('${g.id}')" class="flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-[11px] font-mono font-semibold text-rose-300 bg-rose-950 border border-rose-900 hover:bg-rose-900 transition-colors">
+              <i class="fa-solid fa-trash"></i> Delete
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ==========================================
+    // 8. CONFIRMATION MODAL (DELETE / RESTORE DEFAULTS)
+    // ==========================================
+    let pendingConfirmCallback = null;
+
+    function showConfirmModal(message, callback) {
+      document.getElementById('confirm-modal-message').innerText = message;
+      pendingConfirmCallback = callback;
+      document.getElementById('confirm-modal').classList.remove('hidden');
+    }
+
+    function closeConfirmModal() {
+      pendingConfirmCallback = null;
+      document.getElementById('confirm-modal').classList.add('hidden');
+    }
+
+    function executeConfirmedAction() {
+      if (typeof pendingConfirmCallback === 'function') {
+        pendingConfirmCallback();
+      }
+      closeConfirmModal();
+    }
+
+    function requestDeleteProject(id) {
+      showConfirmModal('Are you sure you want to delete this record?', () => {
+        projects = projects.filter(p => p.id !== id);
+        saveProjects();
+        renderProjects();
+        renderManageList();
+      });
+    }
+
+    function requestDeleteGallery(id) {
+      showConfirmModal('Are you sure you want to delete this record?', () => {
+        galleryItems = galleryItems.filter(g => g.id !== id);
+        saveGallery();
+        renderGallery(currentGalleryFilter);
+        renderManageList();
+      });
+    }
+
+    // ==========================================
+    // 9. BACKUP (EXPORT) & RESTORE DEFAULTS
+    // ==========================================
+    function exportBackup() {
+      const payload = {
+        exportedAt: new Date().toISOString(),
+        projects: projects,
+        galleryItems: galleryItems
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'data.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function confirmRestoreDefaults() {
+      showConfirmModal(
+        'Restore Defaults will erase all local edits (added, edited, or deleted records) and reset the system back to the default demo items. This cannot be undone. Continue?',
+        () => {
+          projects = JSON.parse(JSON.stringify(DEFAULT_PROJECTS));
+          galleryItems = JSON.parse(JSON.stringify(DEFAULT_GALLERY));
+          saveProjects();
+          saveGallery();
+          renderProjects();
+          filterGallery('all');
+          renderManageList();
+        }
+      );
     }
 
     // ==========================================
     // INITIALIZATION ON DOM READY
     // ==========================================
     document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('new-proj-img-preview').src = PLACEHOLDER_IMAGE;
+      document.getElementById('new-gallery-img-preview').src = PLACEHOLDER_IMAGE;
       renderProjects();
       renderGallery('all');
     });

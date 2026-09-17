@@ -43,9 +43,10 @@
   <!-- FontAwesome Icons for Standalone Display -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- Firebase App & Realtime Database SDK (Compat) -->
+  <!-- Firebase App, Realtime Database & Authentication SDK (Compat) -->
   <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
 
   <style>
     body {
@@ -521,21 +522,21 @@
       <!-- Login View -->
       <div id="admin-login-view" class="space-y-4">
         <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs text-slate-300">
-          <p class="font-mono text-cyan-300 mb-1">Demo Credentials:</p>
-          <p>Click "1-Click Demo Login" or enter any credentials to access the manager.</p>
+          <p class="font-mono text-cyan-300 mb-1">Restricted Access:</p>
+          <p>Sign in with the admin account created in Firebase Authentication.</p>
         </div>
         <form onsubmit="handleAdminLogin(event)" class="space-y-3">
           <div>
-            <label class="text-xs font-mono text-slate-300">Username</label>
-            <input type="text" id="admin-user" value="admin" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm focus:border-cyan-400 focus:outline-none">
+            <label class="text-xs font-mono text-slate-300">Email</label>
+            <input type="email" id="admin-user" autocomplete="username" placeholder="you@example.com" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm focus:border-cyan-400 focus:outline-none">
           </div>
           <div>
             <label class="text-xs font-mono text-slate-300">Password</label>
-            <input type="password" id="admin-pass" value="password123" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm focus:border-cyan-400 focus:outline-none">
+            <input type="password" id="admin-pass" autocomplete="current-password" placeholder="••••••••" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm focus:border-cyan-400 focus:outline-none">
           </div>
+          <p id="admin-login-error" class="hidden text-xs font-mono text-rose-400"></p>
           <div class="flex gap-2 pt-2">
-            <button type="submit" class="flex-1 py-2 px-4 text-xs font-bold text-[#070b14] bg-cyan-400 hover:bg-cyan-300 rounded-xl font-mono">Sign In</button>
-            <button type="button" onclick="quickDemoLogin()" class="py-2 px-4 text-xs font-mono text-cyan-300 bg-cyan-950 border border-cyan-600 rounded-xl hover:bg-cyan-900">1-Click Demo Login</button>
+            <button type="submit" id="admin-login-submit-btn" class="flex-1 py-2 px-4 text-xs font-bold text-[#070b14] bg-cyan-400 hover:bg-cyan-300 rounded-xl font-mono">Sign In</button>
           </div>
         </form>
       </div>
@@ -996,6 +997,7 @@
     };
 
     let db = null;
+    let auth = null;
     let projectsRef = null;
     let galleryRef = null;
     let isFirebaseReady = false;
@@ -1006,6 +1008,7 @@
           firebase.initializeApp(firebaseConfig);
         }
         db = firebase.database();
+        auth = firebase.auth();
         projectsRef = db.ref('projects');
         galleryRef = db.ref('gallery');
         isFirebaseReady = true;
@@ -1013,6 +1016,7 @@
     } catch (e) {
       console.warn("Firebase initialization warning (falling back to local cache):", e);
     }
+
 
     // ==========================================
     // 4. DATA PERSISTENCE HELPERS
@@ -1448,20 +1452,43 @@
 
     function handleAdminLogin(e) {
       e.preventDefault();
-      document.getElementById('admin-login-view').classList.add('hidden');
-      document.getElementById('admin-add-view').classList.remove('hidden');
-      switchMainTab('add');
-      switchAdminTab(currentAdminTab);
-    }
+      const email = document.getElementById('admin-user').value.trim();
+      const pass = document.getElementById('admin-pass').value;
+      const errEl = document.getElementById('admin-login-error');
+      const btn = document.getElementById('admin-login-submit-btn');
+      errEl.classList.add('hidden');
 
-    function quickDemoLogin() {
-      document.getElementById('admin-login-view').classList.add('hidden');
-      document.getElementById('admin-add-view').classList.remove('hidden');
-      switchMainTab('add');
-      switchAdminTab(currentAdminTab);
+      if (!auth) {
+        errEl.innerText = 'Authentication is not available right now. Please try again later.';
+        errEl.classList.remove('hidden');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerText = 'Signing in...';
+
+      auth.signInWithEmailAndPassword(email, pass)
+        .then(() => {
+          btn.disabled = false;
+          btn.innerText = 'Sign In';
+          document.getElementById('admin-login-view').classList.add('hidden');
+          document.getElementById('admin-add-view').classList.remove('hidden');
+          switchMainTab('add');
+          switchAdminTab(currentAdminTab);
+        })
+        .catch((err) => {
+          btn.disabled = false;
+          btn.innerText = 'Sign In';
+          errEl.innerText = 'Incorrect email or password.';
+          errEl.classList.remove('hidden');
+          console.warn('Admin sign-in failed:', err.code);
+        });
     }
 
     function logoutAdmin() {
+      if (auth) {
+        auth.signOut().catch(err => console.warn('Sign-out error:', err));
+      }
       document.getElementById('admin-add-view').classList.add('hidden');
       document.getElementById('admin-login-view').classList.remove('hidden');
       resetProjectForm();

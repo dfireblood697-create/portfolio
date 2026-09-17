@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kashmika | Full-Stack Developer &amp; Technical Specialist</title>
+  <meta name="description" content="Portfolio of Mithila / Kashmika - Full-Stack Developer &amp; Technical Specialist. Web Systems, Mobile Firmware Flashing, Device Repair Gallery, and System Administration.">
+  <meta property="og:title" content="Kashmika | Full-Stack Developer &amp; Technical Specialist" />
+  <meta property="og:description" content="Portfolio of Mithila / Kashmika - Full-Stack Developer &amp; Technical Specialist. Web Systems, Mobile Firmware Flashing, Device Repair Gallery, and System Administration." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              dark: '#070b14',
+              surface: '#090e1d',
+              card: '#0c1326',
+              cyan: '#06b6d4',
+              blue: '#3b82f6',
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons for Standalone Display -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    body {
+      background-color: #070b14;
+      color: #f1f5f9;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .glow-cyan {
+      box-shadow: 0 0 25px rgba(6, 182, 212, 0.25);
+    }
+    .glow-cyan-hover:hover {
+      box-shadow: 0 0 35px rgba(6, 182, 212, 0.45);
+    }
+    /* Custom scrollbar for modern dark feel */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #070b14;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #06b6d4;
+    }
+  </style>
+</head>
+<body class="bg-[#070b14] text-slate-100 antialiased overflow-x-hidden selection:bg-cyan-500/30 selection:text-cyan-200">
+
+  <!-- NAVBAR -->
+  <header class="fixed top-0 left-0 right-0 z-40 bg-[#070b14]/90 backdrop-blur-md border-b border-cyan-500/20 py-3.5 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+      <a href="#hero" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 via-blue-600 to-indigo-600 p-[1px] shadow-[0_0_15px_rgba(6,182,212,0.4)]">
+          <div class="w-full h-full bg-[#090e1c] rounded-[11px] flex items-center justify-center">
+            <i class="fa-solid fa-terminal text-cyan-400"></i>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="font-extrabold text-xl text-white">Kashmika</span>
+            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+          </div>
+          <p class="text-[10px] font-mono tracking-wider uppercase text-cyan-400/80">Dev &amp; Tech Specialist</p>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-1 text-sm font-medium text-slate-300">
+        <a href="#hero" class="px-3 py-1.5 hover:text-cyan-400 hover:bg-cyan-500/10 rounded-lg transition-colors">About</a>
+        <a href="#skills" class="px-3 py-1.5 hover:text-cyan-400 hover:bg-cyan-500/10 rounded-lg transition-colors">Skills</a>
+        <a href="#projects" class="px-3 py-1.5 hover:text-cyan-400 hover:bg-cyan-500/10 rounded-lg transition-colors">Projects</a>
+        <a href="#gallery" class="px-3 py-1.5 hover:text-cyan-400 hover:bg-cyan-500/10 rounded-lg transition-colors flex items-center gap-1.5">
+          <span>Gallery</span>
+          <span class="px-1.5 py-0.2 rounded text-[10px] font-mono bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">NEW</span>
+        </a>
+        <a href="#services" class="px-3 py-1.5 hover:text-cyan-400 hover:bg-cyan-500/10 rounded-lg transition-colors">Services</a>
+        <a href="#contact" class="px-3 py-1.5 hover:text-cyan-400 hover:bg-cyan-500/10 rounded-lg transition-colors">Contact</a>
+      </nav>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-3">
+        <button onclick="openAdminModal()" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono text-cyan-300 bg-slate-900 border border-slate-700 hover:border-cyan-400 rounded-lg transition-all">
+          <i class="fa-solid fa-lock text-cyan-400"></i>
+          <span>Admin Panel</span>
+        </button>
+        <a href="#contact" class="hidden sm:flex items-center gap-1.5 px-4 py-1.5 text-xs font-bold text-[#070b14] bg-cyan-400 hover:bg-cyan-300 rounded-lg transition-all shadow-[0_0_15px_rgba(6,182,212,0.4)]">
+          <span>Let's Talk</span>
+          <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section id="hero" class="relative min-h-[85vh] flex items-center justify-center pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-cyan-500/30 text-xs font-mono">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+          <span class="text-cyan-300 font-semibold">ONLINE:</span>
+          <span class="text-slate-300">Available for Contract &amp; Technical Consulting</span>
+        </div>
+
+        <div class="space-y-2">
+          <h1 class="text-4xl sm:text-6xl font-extrabold text-white tracking-tight">
+            Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500">Kashmika</span>
+          </h1>
+          <p class="text-xl sm:text-2xl font-semibold text-cyan-200">
+            Full-Stack Developer &amp; Technical Specialist
+          </p>
+        </div>
+
+        <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+          Bridging modern full-stack web applications and low-level device systems. 
+          Specializing in scalable platforms (HTML, CSS, JS, React, Tailwind, Flask, Firebase), 
+          mobile firmware flashing &amp; bootloop recovery, and enterprise system administration.
+        </p>
+
+        <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+          <a href="#projects" class="flex items-center gap-2 px-6 py-3.5 text-sm font-bold text-[#070b14] bg-cyan-400 hover:bg-cyan-300 rounded-xl transition-all shadow-[0_0_20px_rgba(6,182,212,0.4)]">
+            <span>View Projects</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+          <a href="#gallery" class="flex items-center gap-2 px-6 py-3.5 text-sm font-bold text-cyan-300 bg-cyan-950/80 hover:bg-cyan-900 border border-cyan-500/50 rounded-xl transition-all shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+            <i class="fa-solid fa-screwdriver-wrench text-cyan-400"></i>
+            <span>Device Gallery</span>
+          </a>
+          <a href="#contact" class="flex items-center gap-2 px-6 py-3.5 text-sm font-medium text-slate-200 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-cyan-400 rounded-xl transition-all">
+            <i class="fa-solid fa-message text-cyan-400"></i>
+            <span>Contact Kashmika</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Hero Terminal Card -->
+      <div class="lg:col-span-5">
+        <div class="rounded-2xl bg-gradient-to-b from-cyan-500/30 via-slate-800 to-blue-500/20 p-[1px] shadow-[0_0_35px_rgba(6,182,212,0.2)]">
+          <div class="bg-[#0a0f1f] rounded-2xl p-6 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                <span class="ml-2 text-xs font-mono text-slate-400">mithila@node:~</span>
+              </div>
+              <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950 px-2 py-0.5 rounded border border-cyan-800">LIVE READY</span>
+            </div>
+
+            <div class="font-mono text-xs space-y-2 bg-black/50 p-4 rounded-xl border border-slate-800">
+              <p class="text-slate-400"><span class="text-cyan-400 font-bold">$</span> cat capabilities.json</p>
+              <div class="text-cyan-300 pl-3 border-l-2 border-cyan-500/40 text-[11px] space-y-1">
+                <p>"role": "Full-Stack Developer &amp; Technical Specialist",</p>
+                <p>"web": ["React", "Tailwind", "Flask", "Firebase"],</p>
+                <p>"firmware": ["EDL Flashing", "Bootloop Salvage", "FRP Bypass"],</p>
+                <p>"telephony": ["3CX Call Forwarding", "VoIP SIP Trunks"]</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                <p class="text-cyan-400 font-mono">Web Systems</p>
+                <p class="font-bold text-white text-base">Production</p>
+              </div>
+              <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                <p class="text-blue-400 font-mono">Mobile / Flashing</p>
+                <p class="font-bold text-white text-base">EDL &amp; Fastboot</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SKILLS & EXPERTISE: 3 CARDS -->
+  <section id="skills" class="py-24 px-4 sm:px-6 lg:px-8 bg-[#080d19] border-t border-b border-cyan-500/10">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+        <span class="px-3 py-1 rounded-full bg-cyan-950 border border-cyan-500/30 text-xs font-mono text-cyan-300">CORE COMPETENCIES</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Skills &amp; Technical Expertise</h2>
+        <p class="text-slate-400 text-sm sm:text-base">Specialized capabilities across modern software, hardware recovery, and system administration.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- Card 1 -->
+        <div class="rounded-2xl bg-gradient-to-b from-slate-900 via-[#0a0f21] to-[#070b16] border border-slate-800 hover:border-cyan-500/50 p-6 sm:p-7 flex flex-col justify-between transition-all hover:-translate-y-1">
+          <div class="space-y-5">
+            <div class="w-12 h-12 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-cyan-400">
+              <i class="fa-solid fa-code text-xl"></i>
+            </div>
+            <div>
+              <span class="text-xs font-mono text-cyan-400">STACK 01</span>
+              <h3 class="text-xl font-bold text-white mt-1">Web &amp; Systems Development</h3>
+              <p class="text-sm text-slate-400 mt-2">Engineering responsive web apps, REST APIs, and integrated database solutions.</p>
+            </div>
+            <div class="space-y-2 pt-3 border-t border-slate-800">
+              <div class="flex items-center gap-2 text-xs font-mono text-slate-300"><i class="fa-solid fa-circle-check text-cyan-400"></i> HTML5, CSS3, JavaScript (ES6+)</div>
+              <div class="flex items-center gap-2 text-xs font-mono text-slate-300"><i class="fa-solid fa-circle-check text-cyan-400"></i> React &amp; Tailwind CSS</div>
+              <div class="flex items-center gap-2 text-xs font-mono text-slate-300"><i class="fa-solid fa-circle-check text-cyan-400"></i> Flask (Python) &amp; Firebase</div>
+              <div class="flex items-center gap-2 text-xs font-mono text-slate-300"><i class="fa-solid fa-circle-check text-cyan-400"></i> RESTful APIs &amp; Webhooks</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="rounded-2xl bg-gradient-to-b from-slate-900 via-[#0a0f21] to-[#070b16] border border-slate-800 hover:border-blue-500/50 p-6 sm:p-7 flex flex-col justify-between transition-all hover:-translate-y-1">
+          <div class="space-y-5">
+            <div class="w-12 h-12 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-blue-400">
+              <i class="fa-solid fa-microchip text-xl"></i>
+            </div>
+            <div>
+              <span class="text-xs font-mono text-blue-400">STACK 02</span>
+              <h3 class="text-xl font-bold text-white mt-1">Mobile Firmware &amp; Technical Services</h3>
+              <p class="text-sm text-slate-400 mt-2">Low-level device engineering, partition recovery, and platform recovery for mobile OS.</p>
+            </div>
+            <div class="space-y-2 pt-3 border-t border-slate-800">
+              <div class="flex items-center gap-2 text-xs font-mono text-slate-300"><i class="fa-solid fa-circle-check text-blue-400"></i> Android Software Flashing (Odin, Fastboot, EDL)</div>
+              <div class="flex items-center gap-2 text-xs font-mono text-slate-300"><i class="fa-solid fa-circle-check text-blue-400"></i> Bootloop Recovery &amp; Unbricking</div>
+              <div class="flex items-center gap-2 text-xs font-mono text-slate-300"><i class="fa-solid fa-circle-check text-blue-400"></i> Security Bypass &amp; FRP / Network Unlocking</div>
+              <div class="flex items-center gap-2 text-xs font-mono text-slate-300"><i class="fa-solid fa-circle-check text-blue-400"></i> iOS Restores &amp; DFU Mode Recovery</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="rounded-2xl bg-gradient-to-b from-slate-900 via-[#0a0f21] to-[#070b16] border border-slate-800 hover:border-teal-500/50 p-6 sm:p-7 flex flex-col justify-between transition-all hover:-translate-y-1">
+          <div class="space-y-5">
+            <div class="w-12 h-12 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-teal-400">
+              <i class="fa-solid fa-server text-xl"></i>
+            </div>
+            <div>
+              <span class="text-xs font-mono text-teal-400">STACK 03</span>
+              <h3 class="text-xl font-bold text-white mt-1">System Administration</h3>
+              <p class="text-sm text-slate-400 mt-2">Hardware/Software diagnostics, OS setup, and reliable corporate network security.</p>
+            </div>
+            <div class="space-y-2 pt-3 border-t border-slate-800">
+              <div class="flex items-center gap-2 text-xs font-mono text-slate-300"><i class="fa-solid fa-circle-check text-teal-400"></i> Hardware / Software Troubleshooting</div>
+              <div class="flex items-center gap-2 text-xs font-mono text-slate-300"><i class="fa-solid fa-circle-check text-teal-400"></i> OS Setup (Windows Server, Linux, macOS)</div>
+              <div class="flex items-center gap-2 text-xs font-mono text-slate-300"><i class="fa-solid fa-circle-check text-teal-400"></i> Network Configuration (VLANs, DNS, DHCP)</div>
+              <div class="flex items-center gap-2 text-xs font-mono text-slate-300"><i class="fa-solid fa-circle-check text-teal-400"></i> VoIP Telephony (3CX PBX, SIP Trunks)</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS SHOWCASE -->
+  <section id="projects" class="py-24 px-4 sm:px-6 lg:px-8 bg-[#070b15]">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
+        <div>
+          <span class="px-3 py-1 rounded-full bg-cyan-950 border border-cyan-500/30 text-xs font-mono text-cyan-300">PORTFOLIO</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">Projects Showcase</h2>
+        </div>
+        <button onclick="openAdminModal('project')" class="inline-flex items-center gap-2 px-4 py-2 text-xs font-mono text-cyan-300 bg-cyan-950/80 border border-cyan-500/50 rounded-xl hover:bg-cyan-900 transition-all">
+          <i class="fa-solid fa-plus text-cyan-400"></i>
+          <span>Admin: Add New Project</span>
+        </button>
+      </div>
+
+      <!-- Container dynamically rendered via JS -->
+      <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
+    </div>
+  </section>
+
+  <!-- DEVICE REPAIR & SERVICE GALLERY SECTION (NEW SECTION) -->
+  <section id="gallery" class="py-24 px-4 sm:px-6 lg:px-8 bg-[#060913] border-t border-cyan-500/20 relative overflow-hidden">
+    <!-- Subtle Background Ambient Glows -->
+    <div class="absolute top-1/4 -left-20 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-1/4 -right-20 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-10 gap-6">
+        <div class="space-y-3">
+          <!-- Proof of Work Badge -->
+          <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-cyan-950/90 border border-cyan-400/40 text-xs font-mono text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.25)]">
+            <span class="flex h-2 w-2 relative">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-400"></span>
+            </span>
+            <span class="tracking-wider font-bold">PROOF OF WORK</span>
+            <span class="text-cyan-500/60">|</span>
+            <span class="text-slate-400">Verified Technical Logs</span>
+          </div>
+
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
+            Device Repair &amp; <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-400">Service Gallery</span>
+          </h2>
+          <p class="text-slate-300 text-sm sm:text-base max-w-2xl leading-relaxed">
+            Documented showcase of unlocked, flashed, and restored mobile devices. Real forensic firmware salvages, bootloop unbricking, partition repairs, and hardware-level diagnostics.
+          </p>
+        </div>
+
+        <!-- Quick Admin / Action Shortcut -->
+        <div class="flex items-center gap-3">
+          <button onclick="openAdminModal('gallery')" class="inline-flex items-center gap-2 px-4 py-2.5 text-xs font-mono font-semibold text-cyan-300 bg-slate-900/90 border border-cyan-500/40 rounded-xl hover:bg-cyan-950 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(6,182,212,0.3)] transition-all">
+            <i class="fa-solid fa-circle-plus text-cyan-400 text-sm"></i>
+            <span>Admin: Add Gallery Record</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Filter Buttons: Dark Futuristic Blue/Cyan Theme -->
+      <div class="flex flex-wrap items-center gap-2.5 mb-10 p-2 rounded-2xl bg-slate-950/80 border border-slate-800/80 backdrop-blur-md max-w-fit">
+        <button onclick="filterGallery('all')" id="filter-btn-all" class="gallery-filter-btn active flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all bg-cyan-400 text-[#070b14] border border-cyan-300 shadow-[0_0_20px_rgba(6,182,212,0.4)]">
+          <i class="fa-solid fa-layer-group text-[11px]"></i>
+          <span>All Devices</span>
+          <span id="count-all" class="px-1.5 py-0.5 rounded text-[10px] bg-black/20 text-[#070b14]">6</span>
+        </button>
+        
+        <button onclick="filterGallery('samsung')" id="filter-btn-samsung" class="gallery-filter-btn flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-medium text-slate-300 bg-slate-900/90 border border-slate-800 hover:border-cyan-500/50 hover:text-cyan-300 transition-all">
+          <i class="fa-solid fa-mobile text-[11px] text-cyan-400"></i>
+          <span>Samsung</span>
+          <span id="count-samsung" class="px-1.5 py-0.5 rounded text-[10px] bg-slate-950 text-cyan-400 border border-slate-800">2</span>
+        </button>
+
+        <button onclick="filterGallery('apple')" id="filter-btn-apple" class="gallery-filter-btn flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-medium text-slate-300 bg-slate-900/90 border border-slate-800 hover:border-cyan-500/50 hover:text-cyan-300 transition-all">
+          <i class="fa-brands fa-apple text-[12px] text-blue-400"></i>
+          <span>iPhone / iOS</span>
+          <span id="count-apple" class="px-1.5 py-0.5 rounded text-[10px] bg-slate-950 text-blue-400 border border-slate-800">2</span>
+        </button>
+
+        <button onclick="filterGallery('xiaomi')" id="filter-btn-xiaomi" class="gallery-filter-btn flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-medium text-slate-300 bg-slate-900/90 border border-slate-800 hover:border-cyan-500/50 hover:text-cyan-300 transition-all">
+          <i class="fa-solid fa-bolt text-[11px] text-amber-400"></i>
+          <span>Xiaomi / Redmi</span>
+          <span id="count-xiaomi" class="px-1.5 py-0.5 rounded text-[10px] bg-slate-950 text-amber-400 border border-slate-800">2</span>
+        </button>
+      </div>
+
+      <!-- Responsive Photo Grid with Hover Overlays -->
+      <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
+        <!-- Rendered via renderGallery() in JS -->
+      </div>
+
+      <!-- Empty State Container (if filter has no items) -->
+      <div id="gallery-empty" class="hidden text-center py-16 px-4 rounded-2xl bg-slate-950/60 border border-slate-800 space-y-3">
+        <i class="fa-solid fa-box-open text-3xl text-slate-600"></i>
+        <p class="text-slate-400 text-sm">No device service records found for this category filter.</p>
+        <button onclick="filterGallery('all')" class="text-xs font-mono text-cyan-400 hover:underline">Reset to All Devices</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SERVICES OFFERED -->
+  <section id="services" class="py-24 px-4 sm:px-6 lg:px-8 bg-[#080d1a] border-t border-cyan-500/10">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+        <span class="px-3 py-1 rounded-full bg-cyan-950 border border-cyan-500/30 text-xs font-mono text-cyan-300">SOLUTIONS</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Services Offered</h2>
+        <p class="text-slate-400 text-sm sm:text-base">Targeted technical services for individuals and enterprise corporate teams.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Service 1 -->
+        <div class="rounded-2xl bg-gradient-to-b from-slate-900 via-[#0a0f21] to-[#070b16] border border-slate-800 p-6 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="w-12 h-12 rounded-xl bg-slate-950 flex items-center justify-center text-cyan-400 border border-slate-800">
+              <i class="fa-solid fa-globe text-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white">Web Administration</h3>
+            <p class="text-sm text-slate-400">Hosting management, domain setup, SSL provisioning, performance monitoring, and database upkeep to ensure 24/7 web availability.</p>
+          </div>
+          <a href="#contact" class="mt-6 text-xs font-mono text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+            <span>Inquire Web Administration</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="rounded-2xl bg-gradient-to-b from-slate-900 via-[#0a0f21] to-[#070b16] border border-slate-800 p-6 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="w-12 h-12 rounded-xl bg-slate-950 flex items-center justify-center text-blue-400 border border-slate-800">
+              <i class="fa-solid fa-mobile-screen-button text-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white">Device Diagnostics</h3>
+            <p class="text-sm text-slate-400">Advanced hardware &amp; firmware inspection, bootloop salvage, security bypass, FRP unlocking, and factory firmware restoration.</p>
+          </div>
+          <a href="#contact" class="mt-6 text-xs font-mono text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+            <span>Inquire Device Diagnostics</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="rounded-2xl bg-gradient-to-b from-slate-900 via-[#0a0f21] to-[#070b16] border border-slate-800 p-6 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="w-12 h-12 rounded-xl bg-slate-950 flex items-center justify-center text-teal-400 border border-slate-800">
+              <i class="fa-solid fa-headset text-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white">Tech Support for ICT Teams</h3>
+            <p class="text-sm text-slate-400">Specialized tier 2/3 technical escalation partner for corporate ICT departments, handling network outages, PBX setups, and OS deployments.</p>
+          </div>
+          <a href="#contact" class="mt-6 text-xs font-mono text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+            <span>Inquire ICT Support</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT & FOOTER -->
+  <section id="contact" class="py-24 px-4 sm:px-6 lg:px-8 bg-[#070b14] border-t border-cyan-500/10">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+        <span class="px-3 py-1 rounded-full bg-cyan-950 border border-cyan-500/30 text-xs font-mono text-cyan-300">COMMS</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Contact &amp; Connect</h2>
+        <p class="text-slate-400 text-sm sm:text-base">Reach out directly via WhatsApp, Phone, Email, or Social Channels.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        
+        <!-- WhatsApp -->
+        <a href="https://wa.me/94772744658?text=Hi%20Kashmika%2C%20I%20am%20interested%20in%20your%20services" target="_blank" class="p-6 rounded-2xl bg-slate-900 border border-slate-800 hover:border-emerald-500/50 flex flex-col items-center text-center transition-all">
+          <div class="w-12 h-12 rounded-xl bg-emerald-950 flex items-center justify-center text-emerald-400 mb-3">
+            <i class="fa-brands fa-whatsapp text-2xl"></i>
+          </div>
+          <span class="text-xs font-mono text-emerald-400">Instant Chat</span>
+          <p class="font-bold text-white mt-1">+94 77 274 4658</p>
+        </a>
+
+        <!-- Phone -->
+        <a href="tel:+94772744658" class="p-6 rounded-2xl bg-slate-900 border border-slate-800 hover:border-cyan-500/50 flex flex-col items-center text-center transition-all">
+          <div class="w-12 h-12 rounded-xl bg-cyan-950 flex items-center justify-center text-cyan-400 mb-3">
+            <i class="fa-solid fa-phone text-xl"></i>
+          </div>
+          <span class="text-xs font-mono text-cyan-400">Direct Call</span>
+          <p class="font-bold text-white mt-1">+94 77 274 4658</p>
+        </a>
+
+        <!-- Email -->
+        <a href="mailto:mithila.devtech@gmail.com" class="p-6 rounded-2xl bg-slate-900 border border-slate-800 hover:border-blue-500/50 flex flex-col items-center text-center transition-all">
+          <div class="w-12 h-12 rounded-xl bg-blue-950 flex items-center justify-center text-blue-400 mb-3">
+            <i class="fa-solid fa-envelope text-xl"></i>
+          </div>
+          <span class="text-xs font-mono text-blue-400">Email Address</span>
+          <p class="font-bold text-white mt-1 text-sm">mithila.devtech@gmail.com</p>
+        </a>
+
+      </div>
+
+      <!-- Socials -->
+      <div class="flex items-center justify-center gap-4 mt-12">
+        <a href="https://github.com" target="_blank" class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-400 flex items-center justify-center text-slate-300 hover:text-cyan-400 transition-colors">
+          <i class="fa-brands fa-github"></i>
+        </a>
+        <a href="https://linkedin.com" target="_blank" class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-400 flex items-center justify-center text-slate-300 hover:text-cyan-400 transition-colors">
+          <i class="fa-brands fa-linkedin-in"></i>
+        </a>
+        <a href="https://wa.me/94772744658" target="_blank" class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 hover:border-emerald-400 flex items-center justify-center text-slate-300 hover:text-emerald-400 transition-colors">
+          <i class="fa-brands fa-whatsapp"></i>
+        </a>
+        <a href="https://t.me" target="_blank" class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-400 flex items-center justify-center text-slate-300 hover:text-cyan-400 transition-colors">
+          <i class="fa-brands fa-telegram"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="py-8 px-4 text-center text-xs font-mono text-slate-500 border-t border-slate-800">
+    <p>&copy; 2026 Mithila / Kashmika. Full-Stack Developer &amp; Technical Specialist. All rights reserved.</p>
+  </footer>
+
+  <!-- DYNAMIC ADMIN PANEL MODAL (UPDATED WITH TABS FOR PROJECTS & GALLERY) -->
+  <div id="admin-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="relative w-full max-w-2xl bg-[#090e1d] border border-cyan-500/40 rounded-2xl p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto shadow-[0_0_50px_rgba(6,182,212,0.15)]">
+      <button onclick="closeAdminModal()" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-white bg-slate-900 rounded-lg">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-cyan-950 border border-cyan-500/40 flex items-center justify-center text-cyan-400">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold text-white">Admin Control Center</h3>
+          <p class="text-xs text-slate-400">Manage showcase projects and mobile device service gallery records.</p>
+        </div>
+      </div>
+
+      <!-- Login View -->
+      <div id="admin-login-view" class="space-y-4">
+        <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs text-slate-300">
+          <p class="font-mono text-cyan-300 mb-1">Demo Credentials:</p>
+          <p>Click "1-Click Demo Login" or enter any credentials to access the manager.</p>
+        </div>
+        <form onsubmit="handleAdminLogin(event)" class="space-y-3">
+          <div>
+            <label class="text-xs font-mono text-slate-300">Username</label>
+            <input type="text" id="admin-user" value="admin" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm focus:border-cyan-400 focus:outline-none">
+          </div>
+          <div>
+            <label class="text-xs font-mono text-slate-300">Password</label>
+            <input type="password" id="admin-pass" value="password123" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm focus:border-cyan-400 focus:outline-none">
+          </div>
+          <div class="flex gap-2 pt-2">
+            <button type="submit" class="flex-1 py-2 px-4 text-xs font-bold text-[#070b14] bg-cyan-400 hover:bg-cyan-300 rounded-xl font-mono">Sign In</button>
+            <button type="button" onclick="quickDemoLogin()" class="py-2 px-4 text-xs font-mono text-cyan-300 bg-cyan-950 border border-cyan-600 rounded-xl hover:bg-cyan-900">1-Click Demo Login</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Authenticated Manager View with Tabs -->
+      <div id="admin-add-view" class="hidden space-y-5">
+        <!-- Top Auth Status & Logout -->
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span class="text-xs font-mono text-emerald-400">Authenticated as Admin</span>
+          </div>
+          <button onclick="logoutAdmin()" class="text-xs font-mono text-slate-400 hover:text-rose-400 transition-colors">[Log Out]</button>
+        </div>
+
+        <!-- Navigation Tabs: Projects vs Device Gallery -->
+        <div class="grid grid-cols-2 gap-2 p-1.5 bg-slate-950 rounded-xl border border-slate-800">
+          <button type="button" id="tab-btn-project" onclick="switchAdminTab('project')" class="py-2 px-3 rounded-lg text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all bg-cyan-500 text-[#070b14] shadow-sm">
+            <i class="fa-solid fa-diagram-project"></i>
+            <span>Add Project</span>
+          </button>
+          <button type="button" id="tab-btn-gallery" onclick="switchAdminTab('gallery')" class="py-2 px-3 rounded-lg text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all text-slate-400 hover:text-cyan-300">
+            <i class="fa-solid fa-screwdriver-wrench"></i>
+            <span>Add Gallery Item</span>
+          </button>
+        </div>
+
+        <!-- TAB 1: ADD PROJECT FORM -->
+        <div id="tab-content-project" class="space-y-4">
+          <form onsubmit="handleAddNewProject(event)" class="space-y-3">
+            <div>
+              <label class="text-xs font-mono text-slate-300">Project Title *</label>
+              <input type="text" id="new-proj-title" required placeholder="e.g. Distributed Telemetry Sensor" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm focus:border-cyan-400 focus:outline-none">
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-xs font-mono text-slate-300">Category</label>
+                <select id="new-proj-cat" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-200 text-xs focus:border-cyan-400 focus:outline-none">
+                  <option value="web">Web &amp; Systems</option>
+                  <option value="mobile">Mobile &amp; Firmware</option>
+                  <option value="automation">Automation Tools</option>
+                  <option value="system">PBX &amp; Telephony</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs font-mono text-slate-300">Status</label>
+                <select id="new-proj-status" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-200 text-xs focus:border-cyan-400 focus:outline-none">
+                  <option value="In Production">In Production</option>
+                  <option value="Active Deployment">Active Deployment</option>
+                  <option value="Completed">Completed</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="text-xs font-mono text-slate-300">Tags (Comma-separated)</label>
+              <input type="text" id="new-proj-tags" value="React, Python, Fastboot" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono focus:border-cyan-400 focus:outline-none">
+            </div>
+            <div>
+              <label class="text-xs font-mono text-slate-300">Screenshot / Image URL</label>
+              <input type="url" id="new-proj-img" value="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=900&q=80" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono focus:border-cyan-400 focus:outline-none">
+            </div>
+            <div>
+              <label class="text-xs font-mono text-slate-300">Description *</label>
+              <textarea id="new-proj-desc" required rows="3" placeholder="Describe the system..." class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm resize-none focus:border-cyan-400 focus:outline-none"></textarea>
+            </div>
+            <button type="submit" class="w-full py-2.5 px-4 text-xs font-mono font-bold text-[#070b14] bg-cyan-400 hover:bg-cyan-300 rounded-xl transition-all shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+              Publish Project to Live Showcase
+            </button>
+          </form>
+        </div>
+
+        <!-- TAB 2: ADD GALLERY ITEM FORM (NEW) -->
+        <div id="tab-content-gallery" class="hidden space-y-4">
+          <form onsubmit="handleAddNewGalleryItem(event)" class="space-y-3">
+            <div>
+              <label class="text-xs font-mono text-slate-300">Device Model &amp; Identifier *</label>
+              <input type="text" id="new-gallery-model" required placeholder="e.g. Samsung Galaxy S23 Ultra (SM-S918B)" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm focus:border-cyan-400 focus:outline-none">
+            </div>
+            <div>
+              <label class="text-xs font-mono text-slate-300">Operation / Service Title *</label>
+              <input type="text" id="new-gallery-title" required placeholder="e.g. Knox Guard &amp; FRP Lock Removal" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm focus:border-cyan-400 focus:outline-none">
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-xs font-mono text-slate-300">Brand Tag *</label>
+                <select id="new-gallery-brand" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-200 text-xs focus:border-cyan-400 focus:outline-none">
+                  <option value="samsung">Samsung</option>
+                  <option value="apple">iPhone / iOS</option>
+                  <option value="xiaomi">Xiaomi / Redmi</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs font-mono text-slate-300">Service Tag / Badge *</label>
+                <input type="text" id="new-gallery-servicetag" required placeholder="e.g. FRP Lock Removed, Bootloop Fix, Odin Flashed" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono focus:border-cyan-400 focus:outline-none">
+              </div>
+            </div>
+            <div>
+              <label class="text-xs font-mono text-slate-300">Tool / Protocol Used</label>
+              <input type="text" id="new-gallery-tool" placeholder="e.g. Odin v3.14.4 / EDL Testpoint / DFU Clean Flash" value="Odin v3.14.4" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono focus:border-cyan-400 focus:outline-none">
+            </div>
+            <div>
+              <label class="text-xs font-mono text-slate-300">Screenshot / Photo Image URL *</label>
+              <input type="url" id="new-gallery-img" required value="https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=900&q=80" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-mono focus:border-cyan-400 focus:outline-none">
+            </div>
+            <div>
+              <label class="text-xs font-mono text-slate-300">Service Diagnostic Notes / Description *</label>
+              <textarea id="new-gallery-desc" required rows="2" placeholder="Describe the unlock, firmware restoration, or hardware salvage performed..." class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-sm resize-none focus:border-cyan-400 focus:outline-none"></textarea>
+            </div>
+            <button type="submit" class="w-full py-2.5 px-4 text-xs font-mono font-bold text-[#070b14] bg-cyan-400 hover:bg-cyan-300 rounded-xl transition-all shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+              Publish Record to Device Gallery
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LIGHTBOX / DETAIL MODAL FOR GALLERY ITEMS -->
+  <div id="gallery-detail-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+    <div class="relative w-full max-w-2xl bg-[#090e1d] border border-cyan-500/50 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(6,182,212,0.25)] flex flex-col max-h-[90vh]">
+      <button onclick="closeGalleryModal()" class="absolute top-4 right-4 z-20 p-2 text-slate-300 hover:text-white bg-black/70 rounded-full hover:bg-black transition-colors">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="relative aspect-video w-full bg-slate-950 overflow-hidden">
+        <img id="detail-modal-img" src="" alt="" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#090e1d] via-transparent to-black/40"></div>
+        <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+          <span id="detail-modal-tag" class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-cyan-400 text-[#070b14]"></span>
+          <span id="detail-modal-brand" class="px-3 py-1 rounded-full text-xs font-mono bg-black/80 text-cyan-300 border border-cyan-800"></span>
+        </div>
+      </div>
+
+      <div class="p-6 sm:p-7 space-y-4 overflow-y-auto">
+        <div>
+          <p id="detail-modal-model" class="text-xs font-mono text-cyan-400 uppercase tracking-wider"></p>
+          <h3 id="detail-modal-title" class="text-2xl font-extrabold text-white mt-1"></h3>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 py-3 border-y border-slate-800 text-xs font-mono">
+          <div>
+            <span class="text-slate-500 block">TOOL / ENVIRONMENT</span>
+            <span id="detail-modal-tool" class="text-slate-200 font-semibold"></span>
+          </div>
+          <div>
+            <span class="text-slate-500 block">SERVICE DATE / STATUS</span>
+            <span id="detail-modal-date" class="text-emerald-400 font-semibold"></span>
+          </div>
+        </div>
+
+        <div>
+          <span class="text-xs font-mono text-slate-500 block mb-1">TECHNICAL SUMMARY</span>
+          <p id="detail-modal-desc" class="text-slate-300 text-sm leading-relaxed"></p>
+        </div>
+
+        <div class="pt-2 flex justify-end">
+          <button onclick="closeGalleryModal()" class="px-5 py-2 text-xs font-mono text-slate-300 bg-slate-900 border border-slate-700 hover:border-cyan-400 rounded-xl transition-all">
+            Close Inspector
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // ==========================================
+    // 1. PROJECTS DATA & FUNCTIONS
+    // ==========================================
+    let projects = [
+      {
+        id: "proj-1789575460776",
+        title: "Distributed Telemetry Sensor Hub",
+        category: "web",
+        tags: ["React", "Tailwind CSS", "TypeScript", "WebSockets"],
+        description: "High-throughput telemetry ingestion platform processing edge sensor streams with zero-latency live visualizers.",
+        longDescription: "Engineered with precision for robust uptime and modular scalability across multi-node edge controllers.",
+        image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80",
+        status: "In Production",
+        featured: true
+      },
+      {
+        id: "proj-1",
+        title: "Employee Management & Payroll System",
+        category: "web",
+        tags: ["React", "Flask", "Firebase", "Tailwind CSS"],
+        status: "In Production",
+        featured: true,
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80",
+        description: "Comprehensive enterprise portal for employee attendance tracking, automated salary calculation, leave approval workflow, and payslip generation.",
+        longDescription: "Engineered an end-to-end personnel and payroll management system for growing enterprises. Features automated overtime calculations, statutory deduction algorithms, role-based access for HR and employees, and instant PDF payslip distribution."
+      },
+      {
+        id: "proj-2",
+        title: "Siriwardana Mobile - LPR Tracker",
+        category: "mobile",
+        tags: ["Python", "Computer Vision", "Android API", "SQLite"],
+        status: "Active Deployment",
+        featured: true,
+        image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=900&q=80",
+        description: "High-accuracy License Plate Recognition (LPR) mobile telemetry solution for inventory tracking, vehicle entry logs, and real-time alerts.",
+        longDescription: "Specialized mobile and backend system tailored for automotive inventory management. Utilizes lightweight OCR algorithms to capture and verify vehicle registration numbers under variable outdoor lighting conditions with instant synchronization to central dispatch."
+      },
+      {
+        id: "proj-3",
+        title: "Automated Receipt Generator Tool",
+        category: "automation",
+        tags: ["HTML5", "Tailwind", "JavaScript", "PDF Engine"],
+        status: "Completed",
+        featured: true,
+        image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=900&q=80",
+        description: "Fast, client-side digital billing utility enabling retail counter staff to format, calculate taxes, apply discounts, and generate print-ready tax invoices in seconds.",
+        longDescription: "Created a zero-latency web application designed for fast point-of-sale receipt issuance. Operates seamlessly offline with localStorage cache, supports multiple currency formats, customizable itemized lines, and thermal printer receipt outputs."
+      },
+      {
+        id: "proj-4",
+        title: "3CX Call Forwarding System",
+        category: "system",
+        tags: ["VoIP / SIP", "3CX PBX", "API Webhooks", "Network Admin"],
+        status: "Active Deployment",
+        featured: true,
+        image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",
+        description: "Automated dynamic call routing and after-hours escalation matrix integrated with 3CX Enterprise PBX, ensuring seamless client availability.",
+        longDescription: "Configured and deployed an automated rule engine for a multi-branch corporate telephony infrastructure. Handles time-based forwarding, emergency on-call developer rotation, SMS alert dispatching, and SIP trunk failover monitoring."
+      }
+    ];
+
+    function renderProjects() {
+      const grid = document.getElementById('projects-grid');
+      if (!grid) return;
+      grid.innerHTML = projects.map(p => `
+        <div class="rounded-2xl bg-gradient-to-b from-slate-900 via-[#0a0f21] to-[#070b16] border border-slate-800 hover:border-cyan-500/50 overflow-hidden flex flex-col justify-between transition-all group">
+          <div class="aspect-video w-full bg-slate-950 relative overflow-hidden">
+            <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <span class="absolute top-3 left-3 px-2 py-0.5 rounded bg-black/80 text-[10px] font-mono text-cyan-300 border border-cyan-800">${p.category.toUpperCase()}</span>
+            <span class="absolute top-3 right-3 px-2 py-0.5 rounded bg-black/80 text-[10px] font-mono text-emerald-400 border border-slate-700">${p.status}</span>
+          </div>
+          <div class="p-6 space-y-3 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-xl font-bold text-white">${p.title}</h3>
+              <p class="text-sm text-slate-400 mt-2">${p.description}</p>
+            </div>
+            <div class="pt-3 border-t border-slate-800 space-y-2">
+              <div class="flex flex-wrap gap-1.5">
+                ${p.tags.map(t => `<span class="px-2 py-0.5 rounded bg-slate-950 text-[11px] font-mono text-cyan-300 border border-slate-800">${t}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ==========================================
+    // 2. DEVICE REPAIR & SERVICE GALLERY DATA & LOGIC
+    // ==========================================
+    let galleryItems = [
+      {
+        id: "gallery-1",
+        brand: "samsung",
+        brandName: "Samsung",
+        model: "Samsung Galaxy S22 Ultra (SM-S908B)",
+        serviceTag: "FRP Lock Removed",
+        title: "Knox Guard & FRP Lock Removal",
+        tool: "Odin v3.14.4 & Chimera Suite",
+        date: "2026-02-14",
+        image: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?auto=format&fit=crop&w=900&q=80",
+        description: "Client device locked on Google Account setup wizard post-wipe. Successfully removed Factory Reset Protection via testpoint test mode command and updated Knox bit flag securely without motherboard damage."
+      },
+      {
+        id: "gallery-2",
+        brand: "apple",
+        brandName: "iPhone / iOS",
+        model: "iPhone 13 Pro Max (A2643)",
+        serviceTag: "DFU Mode Restored",
+        title: "iOS 17 Kernel Panic & DFU Clean Restore",
+        tool: "Apple Configurator 2 & 3uTools",
+        date: "2026-02-08",
+        image: "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=900&q=80",
+        description: "Restored device stuck on infinite Apple logo bootloop caused by corrupted NAND filesystem table. Forced hardware DFU mode sequence, flashed verified IPSW, and preserved hardware baseband calibration data."
+      },
+      {
+        id: "gallery-3",
+        brand: "xiaomi",
+        brandName: "Xiaomi / Redmi",
+        model: "Redmi Note 11 Pro 5G (veux)",
+        serviceTag: "Bootloop Fix",
+        title: "Qualcomm EDL 9008 Deep Unbrick & Flashing",
+        tool: "MiFlash Tool & EDL Test Point",
+        date: "2026-01-29",
+        image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=900&q=80",
+        description: "Completely hard-bricked after failed OTA update with black screen and only Qualcomm HS-USB QDLoader 9008 COM port detected. Disassembled rear glass, grounded test points, and executed clean firehose programmer flash."
+      },
+      {
+        id: "gallery-4",
+        brand: "samsung",
+        brandName: "Samsung",
+        model: "Samsung Galaxy A53 5G (SM-A536B)",
+        serviceTag: "Odin Flashed",
+        title: "4-File Binary Repair & CSC Regional Flashing",
+        tool: "Samsung Odin3 v3.14.1 (BL, AP, CP, CSC)",
+        date: "2026-01-15",
+        image: "https://images.unsplash.com/photo-1580910051074-3eb694886505?auto=format&fit=crop&w=900&q=80",
+        description: "Resolved 'An error has occurred while updating device software' soft-brick. Repartitioned PIT file with full 4-file official binary firmware, restoring LTE/5G baseband and VoLTE carrier profiles."
+      },
+      {
+        id: "gallery-5",
+        brand: "apple",
+        brandName: "iPhone / iOS",
+        model: "iPhone 11 (A2221)",
+        serviceTag: "Baseband Restored",
+        title: "No Service Modem Firmware Diagnostic & Fix",
+        tool: "iTunes DFU & Hardware Diagnostics",
+        date: "2025-12-22",
+        image: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=900&q=80",
+        description: "Device exhibited greyed-out modem firmware string and intermittent cellular searching. Restored modem firmware via localized recovery flash and stabilized power management rail."
+      },
+      {
+        id: "gallery-6",
+        brand: "xiaomi",
+        brandName: "Xiaomi / Redmi",
+        model: "POCO F3 / Redmi K40 (alioth)",
+        serviceTag: "Mi Account Unlocked",
+        title: "Mi Cloud Account FRP Bypass & Fastboot Fix",
+        tool: "Fastboot CLI & Mi Unlock Assistant",
+        date: "2025-12-05",
+        image: "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?auto=format&fit=crop&w=900&q=80",
+        description: "Cleared persistent 'This device is locked' activation screen post second-hand purchase with verified invoice credentials. Unlocked bootloader securely and updated to official stable HyperOS distribution."
+      }
+    ];
+
+    let currentGalleryFilter = 'all';
+
+    function updateGalleryCounts() {
+      const allCount = galleryItems.length;
+      const samsungCount = galleryItems.filter(i => i.brand === 'samsung').length;
+      const appleCount = galleryItems.filter(i => i.brand === 'apple').length;
+      const xiaomiCount = galleryItems.filter(i => i.brand === 'xiaomi').length;
+
+      const elAll = document.getElementById('count-all');
+      const elSamsung = document.getElementById('count-samsung');
+      const elApple = document.getElementById('count-apple');
+      const elXiaomi = document.getElementById('count-xiaomi');
+
+      if (elAll) elAll.innerText = allCount;
+      if (elSamsung) elSamsung.innerText = samsungCount;
+      if (elApple) elApple.innerText = appleCount;
+      if (elXiaomi) elXiaomi.innerText = xiaomiCount;
+    }
+
+    function renderGallery(filter = 'all') {
+      currentGalleryFilter = filter;
+      const grid = document.getElementById('gallery-grid');
+      const emptyState = document.getElementById('gallery-empty');
+      if (!grid) return;
+
+      const filteredItems = filter === 'all' 
+        ? galleryItems 
+        : galleryItems.filter(item => item.brand.toLowerCase() === filter.toLowerCase());
+
+      if (filteredItems.length === 0) {
+        grid.innerHTML = '';
+        if (emptyState) emptyState.classList.remove('hidden');
+        return;
+      }
+
+      if (emptyState) emptyState.classList.add('hidden');
+
+      grid.innerHTML = filteredItems.map((item, index) => {
+        // Tag badge color accent based on service tag
+        let tagColor = "bg-cyan-400 text-[#070b14]";
+        if (item.serviceTag.includes("Bootloop")) tagColor = "bg-amber-400 text-[#070b14]";
+        if (item.serviceTag.includes("DFU") || item.serviceTag.includes("Baseband")) tagColor = "bg-blue-400 text-[#070b14]";
+        if (item.serviceTag.includes("Mi Account")) tagColor = "bg-emerald-400 text-[#070b14]";
+
+        return `
+          <div onclick="openGalleryDetail('${item.id}')" class="group relative rounded-2xl bg-gradient-to-b from-[#0c1326] via-[#090e1d] to-[#070b14] border border-slate-800 hover:border-cyan-400/80 overflow-hidden shadow-lg hover:shadow-[0_0_30px_rgba(6,182,212,0.25)] transition-all duration-300 cursor-pointer flex flex-col justify-between">
+            
+            <!-- Screenshot Photo Container -->
+            <div class="aspect-[4/3] w-full bg-slate-950 relative overflow-hidden">
+              <img src="${item.image}" alt="${item.model}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
+              
+              <!-- Subtle Dark Top Gradient for Badges -->
+              <div class="absolute inset-0 bg-gradient-to-t from-[#090e1d] via-transparent to-black/60 pointer-events-none"></div>
+
+              <!-- Top Left & Right Badges -->
+              <div class="absolute top-3 left-3 flex items-center gap-2 z-10">
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono font-bold uppercase tracking-wider bg-black/80 backdrop-blur-md text-cyan-300 border border-cyan-500/40">
+                  ${item.brandName || item.brand.toUpperCase()}
+                </span>
+              </div>
+              <div class="absolute top-3 right-3 z-10">
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono font-bold ${tagColor} shadow-md">
+                  ${item.serviceTag}
+                </span>
+              </div>
+
+              <!-- Hover Overlay with Device Model & Service Detail -->
+              <div class="absolute inset-0 bg-[#070b14]/90 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-5 z-20">
+                <div class="space-y-2">
+                  <div class="flex items-center gap-1.5 text-xs font-mono text-cyan-400">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                    <span>VERIFIED SERVICE LOG</span>
+                  </div>
+                  <h4 class="text-base font-bold text-white">${item.model}</h4>
+                  <p class="text-xs font-mono text-cyan-300/90">${item.tool}</p>
+                  <p class="text-xs text-slate-300 line-clamp-3 pt-1 border-t border-slate-800">${item.description}</p>
+                </div>
+                <div class="flex items-center justify-between pt-3 border-t border-slate-800 text-[11px] font-mono">
+                  <span class="text-slate-400">${item.date}</span>
+                  <span class="text-cyan-400 font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                    <span>Inspect Record</span>
+                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Card Bottom Bar (visible when not hovered) -->
+            <div class="p-4 sm:p-5 space-y-2 border-t border-slate-800/80">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-mono text-cyan-400 font-semibold truncate">${item.model}</span>
+                <span class="text-[11px] font-mono text-slate-500 shrink-0">${item.date}</span>
+              </div>
+              <h4 class="text-sm font-bold text-white line-clamp-1">${item.title}</h4>
+              <p class="text-xs text-slate-400 line-clamp-2">${item.description}</p>
+            </div>
+
+          </div>
+        `;
+      }).join('');
+
+      updateGalleryCounts();
+    }
+
+    function filterGallery(filter) {
+      // Update button visual states
+      const filterButtons = document.querySelectorAll('.gallery-filter-btn');
+      filterButtons.forEach(btn => {
+        btn.classList.remove('active', 'bg-cyan-400', 'text-[#070b14]', 'border-cyan-300', 'shadow-[0_0_20px_rgba(6,182,212,0.4)]');
+        btn.classList.add('bg-slate-900/90', 'text-slate-300', 'border-slate-800');
+      });
+
+      const activeBtn = document.getElementById(`filter-btn-${filter}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-slate-900/90', 'text-slate-300', 'border-slate-800');
+        activeBtn.classList.add('active', 'bg-cyan-400', 'text-[#070b14]', 'border-cyan-300', 'shadow-[0_0_20px_rgba(6,182,212,0.4)]');
+      }
+
+      renderGallery(filter);
+    }
+
+    // Lightbox Modal for Gallery Detail
+    function openGalleryDetail(id) {
+      const item = galleryItems.find(i => i.id === id);
+      if (!item) return;
+
+      document.getElementById('detail-modal-img').src = item.image;
+      document.getElementById('detail-modal-img').alt = item.model;
+      document.getElementById('detail-modal-model').innerText = item.model;
+      document.getElementById('detail-modal-title').innerText = item.title;
+      document.getElementById('detail-modal-tag').innerText = item.serviceTag;
+      document.getElementById('detail-modal-brand').innerText = item.brandName || item.brand.toUpperCase();
+      document.getElementById('detail-modal-tool').innerText = item.tool;
+      document.getElementById('detail-modal-date').innerText = `${item.date} [COMPLETED]`;
+      document.getElementById('detail-modal-desc').innerText = item.description;
+
+      document.getElementById('gallery-detail-modal').classList.remove('hidden');
+    }
+
+    function closeGalleryModal() {
+      document.getElementById('gallery-detail-modal').classList.add('hidden');
+    }
+
+    // ==========================================
+    // 3. ADMIN MODAL & TAB CONTROL
+    // ==========================================
+    let currentAdminTab = 'project';
+
+    function openAdminModal(defaultTab = 'project') {
+      currentAdminTab = defaultTab;
+      document.getElementById('admin-modal').classList.remove('hidden');
+      if (!document.getElementById('admin-add-view').classList.contains('hidden')) {
+        switchAdminTab(defaultTab);
+      }
+    }
+
+    function closeAdminModal() {
+      document.getElementById('admin-modal').classList.add('hidden');
+    }
+
+    function switchAdminTab(tabName) {
+      currentAdminTab = tabName;
+      const btnProj = document.getElementById('tab-btn-project');
+      const btnGall = document.getElementById('tab-btn-gallery');
+      const contentProj = document.getElementById('tab-content-project');
+      const contentGall = document.getElementById('tab-content-gallery');
+
+      if (tabName === 'project') {
+        btnProj.className = "py-2 px-3 rounded-lg text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all bg-cyan-500 text-[#070b14] shadow-sm";
+        btnGall.className = "py-2 px-3 rounded-lg text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all text-slate-400 hover:text-cyan-300";
+        contentProj.classList.remove('hidden');
+        contentGall.classList.add('hidden');
+      } else {
+        btnGall.className = "py-2 px-3 rounded-lg text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all bg-cyan-500 text-[#070b14] shadow-sm";
+        btnProj.className = "py-2 px-3 rounded-lg text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all text-slate-400 hover:text-cyan-300";
+        contentGall.classList.remove('hidden');
+        contentProj.classList.add('hidden');
+      }
+    }
+
+    function handleAdminLogin(e) {
+      e.preventDefault();
+      document.getElementById('admin-login-view').classList.add('hidden');
+      document.getElementById('admin-add-view').classList.remove('hidden');
+      switchAdminTab(currentAdminTab);
+    }
+
+    function quickDemoLogin() {
+      document.getElementById('admin-login-view').classList.add('hidden');
+      document.getElementById('admin-add-view').classList.remove('hidden');
+      switchAdminTab(currentAdminTab);
+    }
+
+    function logoutAdmin() {
+      document.getElementById('admin-add-view').classList.add('hidden');
+      document.getElementById('admin-login-view').classList.remove('hidden');
+    }
+
+    function handleAddNewProject(e) {
+      e.preventDefault();
+      const title = document.getElementById('new-proj-title').value;
+      const cat = document.getElementById('new-proj-cat').value;
+      const status = document.getElementById('new-proj-status').value;
+      const tags = document.getElementById('new-proj-tags').value.split(',').map(t => t.trim());
+      const img = document.getElementById('new-proj-img').value;
+      const desc = document.getElementById('new-proj-desc').value;
+
+      projects.unshift({
+        id: 'proj-' + Date.now(),
+        title: title,
+        category: cat,
+        status: status,
+        tags: tags,
+        image: img,
+        description: desc
+      });
+
+      renderProjects();
+      closeAdminModal();
+      document.getElementById('new-proj-title').value = '';
+      document.getElementById('new-proj-desc').value = '';
+      alert('Project successfully added to the live showcase!');
+    }
+
+    function handleAddNewGalleryItem(e) {
+      e.preventDefault();
+      const model = document.getElementById('new-gallery-model').value;
+      const title = document.getElementById('new-gallery-title').value;
+      const brand = document.getElementById('new-gallery-brand').value;
+      const serviceTag = document.getElementById('new-gallery-servicetag').value;
+      const tool = document.getElementById('new-gallery-tool').value;
+      const img = document.getElementById('new-gallery-img').value;
+      const desc = document.getElementById('new-gallery-desc').value;
+
+      let brandDisplayName = "Samsung";
+      if (brand === 'apple') brandDisplayName = "iPhone / iOS";
+      if (brand === 'xiaomi') brandDisplayName = "Xiaomi / Redmi";
+
+      const newItem = {
+        id: 'gallery-' + Date.now(),
+        brand: brand,
+        brandName: brandDisplayName,
+        model: model,
+        title: title,
+        serviceTag: serviceTag,
+        tool: tool || "OEM Service Software",
+        date: new Date().toISOString().split('T')[0],
+        image: img,
+        description: desc
+      };
+
+      galleryItems.unshift(newItem);
+      renderGallery(currentGalleryFilter);
+      closeAdminModal();
+
+      // Clear input fields
+      document.getElementById('new-gallery-model').value = '';
+      document.getElementById('new-gallery-title').value = '';
+      document.getElementById('new-gallery-servicetag').value = '';
+      document.getElementById('new-gallery-desc').value = '';
+
+      alert(`Device Service Record "${title}" successfully added to the Gallery!`);
+    }
+
+    // ==========================================
+    // INITIALIZATION ON DOM READY
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', () => {
+      renderProjects();
+      renderGallery('all');
+    });
+  </script>
+</body>
+</html>
